@@ -11333,11 +11333,10 @@ const bg = () => {
     })
 };
 const SpectatorOverlay = () => {
-    // Set to !0 (True) so it is visible by default for testing
     const [isViewable, setViewable] = L.useState(!0); 
     const [viewingList, setViewingList] = L.useState([
-        { displayName: "User_Alpha", serverId: 10 },
-        { displayName: "User_Bravo", serverId: 22 }
+        { name: "User_Alpha", id: 10 },
+        { name: "User_Bravo", id: 22 }
     ]);
 
     L.useEffect(() => {
@@ -11345,9 +11344,7 @@ const SpectatorOverlay = () => {
             const incoming = event.data;
             if (incoming.action === "updateSpectatorUI") {
                 setViewable(incoming.showUI);
-                if (typeof incoming.playerData !== "undefined") {
-                    setViewingList(incoming.playerData);
-                }
+                if (typeof incoming.playerData !== "undefined") setViewingList(incoming.playerData);
             }
         };
         window.addEventListener("message", handleInternalMessage);
@@ -11358,33 +11355,33 @@ const SpectatorOverlay = () => {
         children: x(bt, {
             mounted: isViewable,
             transition: "fade",
-            duration: 400,
-            timingFunction: "linear",
+            duration: 500,
+            timingFunction: "ease",
             children: styles => U("div", {
-                className: "SpecContainer MainLeft", 
+                className: "KBLWrapper SpectatorLeft", // Mirroring original class
                 style: styles,
                 children: [U("div", {
-                    className: "SpecHeader",
+                    className: "Header",
                     children: [x(ep, {
-                        className: "SpecIcon",
-                        icon: "ph:eye-bold", 
-                        width: "14",
-                        height: "14"
+                        className: "Icon",
+                        icon: "ph:eye-fill", // The eye icon
+                        width: "16",
+                        height: "16"
                     }), x("span", {
-                        children: "Active Spectators"
+                        children: "Spectators"
                     })]
                 }), x("div", {
-                    className: "SpecListBody",
+                    className: "Keybinds", 
                     children: viewingList.map((viewer, idx) => U("div", {
-                        className: "SpecRow",
+                        className: "Keybind",
                         children: [x("div", {
-                            className: "SpecName",
-                            children: viewer.displayName
+                            className: "Label",
+                            children: viewer.name
                         }), x("div", {
-                            className: "SpecID",
-                            children: `ID: ${viewer.serverId}`
+                            className: "Elements",
+                            children: x("span", { children: viewer.id })
                         })]
-                    }, `spec-${idx}`))
+                    }, idx))
                 })]
             })
         })
