@@ -956,22 +956,23 @@ code {
     height: 0
 }
 
-/* Mirroring the original Keybinds style exactly */
+/* Moved to the right side, placed just to the left of Keybinds */
 .SpectatorLeft {
     position: absolute;
-    left: 20px;          /* Same distance as right side */
-    top: 20px;           /* Same distance as top side */
+    right: 220px;        /* Increased distance from right to stay clear of Keybinds */
+    top: 20px;           /* Aligned with the top of the Keybinds box */
     z-index: 1000;
-    min-width: 150px;    /* Matches the compact look of image_1274f9.png */
+    min-width: 150px;    
+    pointer-events: none; /* Keeps the UI from blocking your mouse clicks */
 }
 
-/* Matching the thin red line and header from image_12daee.png */
+/* The rest of your styles remain the same to keep the perfect match */
 .SpectatorLeft .Header {
     display: flex;
     align-items: center;
     gap: 6px;
     padding-bottom: 4px;
-    border-bottom: 1px solid rgba(255, 0, 0, 0.8); /* That sharp red line */
+    border-bottom: 1px solid rgba(255, 0, 0, 0.8);
     color: white;
     font-size: 12px;
     font-weight: bold;
@@ -979,7 +980,7 @@ code {
 }
 
 .SpectatorLeft .Header .Icon {
-    color: #ff0000; /* Red eye icon to match the red keyboard icon */
+    color: #ff0000;
 }
 
 .SpectatorLeft .Keybind {
