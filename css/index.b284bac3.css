@@ -582,94 +582,116 @@
     color: #fff
 }
 
+/* Core structure */
 .NotificationsWrapper {
     position: fixed;
-    top: 1.5vw; /* Phaze style often drops from top or sits top-right */
-    right: 1.5vw;
+    bottom: 1.5vw; /* Positioned slightly from the bottom edge, matching image */
+    right: 1.5vw;  /* Positioned from the right edge */
     display: flex;
     flex-direction: column;
-    gap: 0.4vw;
+    gap: 0.75vw; /* Spacing between stacked notifications */
     z-index: 9999;
     pointer-events: none;
 }
 
+/* The Notification Container - Matches image look */
 .Notification {
-    background-color: #0b0b0be6; /* Deep matte black */
-    border: 1px solid #1a1a1a;
-    width: 17vw;
-    min-width: 17vw;
+    background-color: #1a1a1a; /* Rich dark grey from the image */
+    border-radius: 0.6vw;    /* Rounded corners from the image */
+    padding: 0.8vw 1.2vw;    /* Balanced spacing inside the container */
+    width: 20vw;
+    min-width: 20vw;
     display: flex;
     flex-direction: row;
-    padding: 0.7vw 0.9vw;
-    align-items: center;
-    gap: 0.7vw;
+    gap: 0.8vw;              /* Spacing between icon and text */
+    align-items: center;    /* Centrally aligns icon and text vertically */
     color: #fff;
     position: relative;
     font-family: 'Inter', sans-serif;
     pointer-events: auto;
     
-    /* Animation: Sharp slide from right */
+    /* Recreated Animation: Soft fade and gentle lift from the bottom */
     opacity: 0;
-    transform: translateX(100%);
-    transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transform: translateY(1.5vw);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    
+    overflow: hidden; /* Vital to keep progress bar and border clipped by rounded corners */
 }
 
+/* Animation entry state */
 .Notification.enter {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
 }
 
+/* Animation exit state */
 .Notification.exit {
     opacity: 0;
-    transform: translateX(100%);
+    transform: translateY(1.5vw);
 }
 
-/* The Phaze-style Icon */
+/* The Information 'i' Icon - Centered in blue circle */
 .Notification i {
-    font-size: 1.1vw;
-    color: #278cff; /* Primary accent */
-    filter: drop-shadow(0 0 5px rgba(39, 140, 255, 0.4));
+    color: #278cff; /* Blue accent color from image */
+    background: rgba(39, 140, 255, 0.1); /* Subtle blue circle background */
+    font-size: 1.3vw;
+    width: 2.2vw;
+    height: 2.2vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Makes it a circle */
     flex-shrink: 0;
+    margin: 0;
 }
 
-/* Thin vertical accent line on the far left */
+/* Perfecting the Left Border - Thin, positioned correctly inside the corners */
 .Notification .NotificationBorder {
     position: absolute;
-    top: 0;
+    top: 0.8vw;      /* Align top with padding */
+    bottom: 0.8vw;   /* Align bottom with padding */
     left: 0;
     width: 2px;
-    height: 100%;
-    background-color: #278cff;
+    background-color: #278cff; /* Blue accent line */
+    border-radius: 2px; /* Slight roundness on the line itself */
 }
 
+/* Content Area - Fixed layout to align with icon */
 .Notification .NotificationContent {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 0.15vw; /* Tight spacing between title and description */
+    flex: 1;
     min-width: 0;
 }
 
+/* Updated Title - Replicates the look exactly */
 .Notification .NotificationTitle {
-    font-size: 0.75vw;
+    font-size: 0.85vw;
     font-weight: 700;
-    letter-spacing: 0.03em;
-    text-transform: uppercase; /* Phaze often uses uppercase for headers */
+    line-height: 1.2;
+    color: #fff;
 }
 
+/* Updated Description - High contrast white and refined text wrap */
 .Notification .NotificationDesc {
-    font-size: 0.65vw;
-    color: #888;
-    margin-top: -0.1vw;
+    font-size: 0.72vw;
+    font-weight: 400;
+    line-height: 1.4;
+    word-wrap: break-word;
+    color: #fff; /* Description is also white in the image */
 }
 
-/* The Progress Bar - Top Mounted for that menu feel */
+/* Adjusted Progress Bar - Positioned at the very bottom */
 .Notification .NotificationProgress {
     position: absolute;
-    top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
+    width: 0%;
     height: 1.5px;
-    background: linear-gradient(90deg, #278cff, #50a3ff);
-    box-shadow: 0 1px 4px rgba(39, 140, 255, 0.6);
+    background-color: #278cff; /* Solid blue progress bar */
     animation-name: progress;
     animation-timing-function: linear;
 }
