@@ -995,3 +995,14 @@ code {
     color: rgba(255, 255, 255, 0.5);
     font-size: 12px;
 }
+
+body::after {
+    content: "CSS IS WORKING";
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: red;
+    color: white;
+    z-index: 10000;
+    padding: 20px;
+}
