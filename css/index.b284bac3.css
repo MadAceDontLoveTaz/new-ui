@@ -583,52 +583,52 @@
 }
 
 .Notification {
-    background-color: #0d0d0d;
-    border: 2px solid #333; /* Stronger outline */
-    border-radius: 0; /* Sharp corners for a technical feel */
-    padding: 1vw;
-    width: 19vw;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    border-radius: 1.2vw; /* Very rounded edges */
+    padding: 1vw 1.5vw;
+    width: 18vw;
     display: flex;
     flex-direction: row;
-    gap: 1vw;
+    gap: 0.8vw;
     align-items: center;
-    color: #fff;
+    color: #222; /* Dark text for contrast */
     position: relative;
-    font-family: 'Inter', sans-serif;
+    box-shadow: 10px 10px 20px #bebebe, -5px -5px 10px #ffffff;
     pointer-events: auto;
     
-    /* Animation: Slides in from the right with a slight bounce */
+    /* Animation: Soft fade and lift */
     opacity: 0;
-    transform: translateX(30px);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: translateY(20px);
+    transition: all 0.5s ease-out;
 }
 
 .Notification.enter {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
 }
 
-.Notification .NotificationBorder {
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    bottom: -2px;
-    width: 4px;
-    background-color: #278cff;
+.Notification i {
+    color: #278cff;
+    background: rgba(39, 140, 255, 0.1);
+    padding: 0.5vw;
+    border-radius: 50%;
 }
 
 .Notification .NotificationTitle {
-    font-size: 0.8vw;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #278cff; /* Title takes the accent color */
+    font-size: 0.9vw;
+    font-weight: 700;
+    color: #111;
 }
 
 .Notification .NotificationDesc {
-    font-size: 0.65vw;
-    color: #eee;
-    font-weight: 400;
+    font-size: 0.7vw;
+    color: #666;
+}
+
+.Notification .NotificationProgress {
+    height: 3px;
+    border-radius: 0 0 1.2vw 1.2vw;
+    background: #278cff;
 }
 
 @keyframes progress {
