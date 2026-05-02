@@ -582,53 +582,96 @@
     color: #fff
 }
 
+.NotificationsWrapper {
+    position: fixed;
+    top: 1.5vw; /* Phaze style often drops from top or sits top-right */
+    right: 1.5vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4vw;
+    z-index: 9999;
+    pointer-events: none;
+}
+
 .Notification {
-    background: linear-gradient(145deg, #ffffff, #e6e6e6);
-    border-radius: 1.2vw; /* Very rounded edges */
-    padding: 1vw 1.5vw;
-    width: 18vw;
+    background-color: #0b0b0be6; /* Deep matte black */
+    border: 1px solid #1a1a1a;
+    width: 17vw;
+    min-width: 17vw;
     display: flex;
     flex-direction: row;
-    gap: 0.8vw;
+    padding: 0.7vw 0.9vw;
     align-items: center;
-    color: #222; /* Dark text for contrast */
+    gap: 0.7vw;
+    color: #fff;
     position: relative;
-    box-shadow: 10px 10px 20px #bebebe, -5px -5px 10px #ffffff;
+    font-family: 'Inter', sans-serif;
     pointer-events: auto;
     
-    /* Animation: Soft fade and lift */
+    /* Animation: Sharp slide from right */
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.5s ease-out;
+    transform: translateX(100%);
+    transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .Notification.enter {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
 }
 
+.Notification.exit {
+    opacity: 0;
+    transform: translateX(100%);
+}
+
+/* The Phaze-style Icon */
 .Notification i {
-    color: #278cff;
-    background: rgba(39, 140, 255, 0.1);
-    padding: 0.5vw;
-    border-radius: 50%;
+    font-size: 1.1vw;
+    color: #278cff; /* Primary accent */
+    filter: drop-shadow(0 0 5px rgba(39, 140, 255, 0.4));
+    flex-shrink: 0;
+}
+
+/* Thin vertical accent line on the far left */
+.Notification .NotificationBorder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background-color: #278cff;
+}
+
+.Notification .NotificationContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
 }
 
 .Notification .NotificationTitle {
-    font-size: 0.9vw;
+    font-size: 0.75vw;
     font-weight: 700;
-    color: #111;
+    letter-spacing: 0.03em;
+    text-transform: uppercase; /* Phaze often uses uppercase for headers */
 }
 
 .Notification .NotificationDesc {
-    font-size: 0.7vw;
-    color: #666;
+    font-size: 0.65vw;
+    color: #888;
+    margin-top: -0.1vw;
 }
 
+/* The Progress Bar - Top Mounted for that menu feel */
 .Notification .NotificationProgress {
-    height: 3px;
-    border-radius: 0 0 1.2vw 1.2vw;
-    background: #278cff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, #278cff, #50a3ff);
+    box-shadow: 0 1px 4px rgba(39, 140, 255, 0.6);
+    animation-name: progress;
+    animation-timing-function: linear;
 }
 
 @keyframes progress {
