@@ -584,144 +584,113 @@
 
 .NotificationsWrapper {
     position: fixed;
-    bottom: 1.5vw;
+    bottom: 1.5vw; /* Moved slightly off the edge for a cleaner look */
     right: 1.5vw;
     display: flex;
     flex-direction: column;
-    gap: 0.6vw;
+    gap: 0.75vw;
     z-index: 9999;
     pointer-events: none;
 }
 
-/* MAIN CARD */
 .Notification {
-    width: 19vw;
-    padding: 0.9vw 1vw 0.8vw 1vw;
-
+    /* Glassmorphism effect */
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5vw;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    
+    padding: 0.8vw 1vw;
+    width: 20vw;
+    min-width: 20vw;
     display: flex;
+    flex-direction: row;
     gap: 0.8vw;
-    align-items: flex-start;
-
-    background: #121419;
-    border-radius: 0.35vw;
-
-    color: #e6e6e6;
-    font-family: 'Inter', sans-serif;
-
+    align-items: center;
+    color: #fff;
     position: relative;
-    overflow: hidden;
+    font-family: 'Inter', sans-serif;
     pointer-events: auto;
-
-    /* subtle depth */
-    box-shadow:
-        0 4px 12px rgba(0,0,0,0.35);
-
-    /* NEW ANIMATION STYLE */
+    
+    /* Smoother transition physics */
     opacity: 0;
-    transform: translateY(15px);
-    transition:
-        transform 0.3s cubic-bezier(.2,.8,.2,1),
-        opacity 0.2s ease;
+    transform: translateX(100%) scale(0.9);
+    transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
+                transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden; /* Ensures progress bar doesn't bleed out of rounded corners */
 }
 
-/* ENTER */
 .Notification.enter {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0) scale(1);
 }
 
-/* EXIT */
 .Notification.exit {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateX(50%) scale(0.9);
 }
 
-/* TOP ACCENT BAR (main identity) */
-.Notification::before {
-    content: "";
+.Notification i {
+    font-size: 1.4vw;
+    flex-shrink: 0;
+    opacity: 0.9;
+}
+
+/* Vertical Accent Strip */
+.Notification .NotificationBorder {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 0.15vw;
-    background: #3aa0ff;
+    width: 0.25vw;
+    height: 100%;
+    background-color: #278cff; /* You can change this color per notification type */
 }
 
-/* ICON BLOCK */
-.Notification i {
-    font-size: 1vw;
-
-    width: 2vw;
-    height: 2vw;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 0.3vw;
-    background: rgba(255,255,255,0.04);
-
-    margin-top: 0.1vw;
-    flex-shrink: 0;
-}
-
-/* CONTENT */
-.NotificationContent {
+.Notification .NotificationContent {
     display: flex;
     flex-direction: column;
-    gap: 0.2vw;
+    gap: 0.15vw;
     flex: 1;
+    min-width: 0;
 }
 
-/* HEADER ROW */
-.NotificationTitle {
-    font-size: 0.75vw;
+.Notification .NotificationTitle {
+    font-size: 0.85vw;
     font-weight: 600;
-    color: #ffffff;
+    letter-spacing: 0.02em;
 }
 
-/* DESCRIPTION */
-.NotificationDesc {
-    font-size: 0.68vw;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.35;
+.Notification .NotificationDesc {
+    font-size: 0.7vw;
+    word-wrap: break-word;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
 }
 
-/* RIGHT SIDE TIME / META (optional look) */
-.Notification::after {
-    content: "";
+/* Progress Bar */
+.Notification .NotificationProgress {
     position: absolute;
-    top: 0.6vw;
-    right: 0.8vw;
-    width: 0.35vw;
-    height: 0.35vw;
-    border-radius: 50%;
-    background: #3aa0ff;
-    opacity: 0.6;
-}
-
-/* PROGRESS (hidden but clean if used) */
-.NotificationProgress {
-    position: absolute;
-    bottom: 0;
     left: 0;
-    height: 0.12vw;
-    width: 100%;
-    background: rgba(255,255,255,0.05);
+    right: 0;
+    bottom: 0;
+    width: 0%;
+    height: 0.2vw;
+    background: linear-gradient(90deg, #278cff, #00c6ff);
+    box-shadow: 0 0 10px rgba(39, 140, 255, 0.5);
+    animation-name: progress;
+    animation-timing-function: linear;
 }
 
-.NotificationProgress::after {
-    content: "";
-    display: block;
-    height: 100%;
-    width: 100%;
-    background: #3aa0ff;
-    animation: notifBar linear forwards;
-}
+@keyframes progress {
+    0% {
+        width: 100%
+    }
 
-@keyframes notifBar {
-    from { transform: translateX(0); }
-    to { transform: translateX(-100%); }
+    to {
+        width: 0%
+    }
 }
 
 .Overlay {
