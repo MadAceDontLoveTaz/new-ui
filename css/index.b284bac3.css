@@ -582,105 +582,53 @@
     color: #fff
 }
 
-.NotificationsWrapper {
-    position: fixed;
-    bottom: 1.5vw; /* Moved slightly off the edge for a cleaner look */
-    right: 1.5vw;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75vw;
-    z-index: 9999;
-    pointer-events: none;
-}
-
 .Notification {
-    /* Glassmorphism effect */
-    background: rgba(20, 20, 20, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.5vw;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    
-    padding: 0.8vw 1vw;
-    width: 20vw;
-    min-width: 20vw;
+    background-color: #0d0d0d;
+    border: 2px solid #333; /* Stronger outline */
+    border-radius: 0; /* Sharp corners for a technical feel */
+    padding: 1vw;
+    width: 19vw;
     display: flex;
     flex-direction: row;
-    gap: 0.8vw;
+    gap: 1vw;
     align-items: center;
     color: #fff;
     position: relative;
     font-family: 'Inter', sans-serif;
     pointer-events: auto;
     
-    /* Smoother transition physics */
+    /* Animation: Slides in from the right with a slight bounce */
     opacity: 0;
-    transform: translateX(100%) scale(0.9);
-    transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
-                transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    overflow: hidden; /* Ensures progress bar doesn't bleed out of rounded corners */
+    transform: translateX(30px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .Notification.enter {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateX(0);
 }
 
-.Notification.exit {
-    opacity: 0;
-    transform: translateX(50%) scale(0.9);
-}
-
-.Notification i {
-    font-size: 1.4vw;
-    flex-shrink: 0;
-    opacity: 0.9;
-}
-
-/* Vertical Accent Strip */
 .Notification .NotificationBorder {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 0.25vw;
-    height: 100%;
-    background-color: #278cff; /* You can change this color per notification type */
-}
-
-.Notification .NotificationContent {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15vw;
-    flex: 1;
-    min-width: 0;
+    top: -2px;
+    left: -2px;
+    bottom: -2px;
+    width: 4px;
+    background-color: #278cff;
 }
 
 .Notification .NotificationTitle {
-    font-size: 0.85vw;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-size: 0.8vw;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #278cff; /* Title takes the accent color */
 }
 
 .Notification .NotificationDesc {
-    font-size: 0.7vw;
-    word-wrap: break-word;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.4;
-}
-
-/* Progress Bar */
-.Notification .NotificationProgress {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 0%;
-    height: 0.2vw;
-    background: linear-gradient(90deg, #278cff, #00c6ff);
-    box-shadow: 0 0 10px rgba(39, 140, 255, 0.5);
-    animation-name: progress;
-    animation-timing-function: linear;
+    font-size: 0.65vw;
+    color: #eee;
+    font-weight: 400;
 }
 
 @keyframes progress {
