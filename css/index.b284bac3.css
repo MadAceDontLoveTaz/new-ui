@@ -955,15 +955,17 @@ code {
     width: 0;
     height: 0
 }
-/* Main container moved to the left */
+
 .SpecContainer.MainLeft {
-    position: absolute;
-    left: 25px; /* Puts it on the opposite side of the keybinds */
-    top: 20%;   /* Offset from the top */
-    background: rgba(15, 15, 15, 0.9); /* Slightly darker than original */
-    border-radius: 2px;
-    min-width: 180px;
-    border-left: 3px solid #ff4444; /* Red accent on the side instead of bottom */
+    position: fixed;      /* Uses fixed to stay on screen during scroll */
+    left: 20px;           /* Moves it to the left side */
+    top: 150px;           /* Sets it below the top header area */
+    z-index: 9999;        /* Forces it to the front of all layers */
+    background: rgba(10, 10, 10, 0.85); 
+    border-radius: 4px;
+    min-width: 200px;
+    border-left: 3px solid #ff4444; /* Red accent bar on the left */
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
 .SpecHeader {
@@ -971,30 +973,25 @@ code {
     align-items: center;
     gap: 8px;
     padding: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #eeeeee;
-    font-size: 12px;
-    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
     text-transform: uppercase;
-}
-
-.SpecListBody {
-    padding: 5px 0;
 }
 
 .SpecRow {
     display: flex;
     justify-content: space-between;
     padding: 8px 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
 }
 
 .SpecName {
     color: #ffffff;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .SpecID {
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
 }
