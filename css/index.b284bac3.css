@@ -584,87 +584,103 @@
 
 .NotificationsWrapper {
     position: fixed;
-    bottom: 0vw;
-    right: 0vw;
+    bottom: 1.5vw; /* Moved slightly off the edge for a cleaner look */
+    right: 1.5vw;
     display: flex;
     flex-direction: column;
-    gap: .5208vw;
+    gap: 0.75vw;
     z-index: 9999;
-    pointer-events: none
+    pointer-events: none;
 }
 
 .Notification {
-    background-color: #000000e6;
-    padding: .5208vw;
-    width: 18.2292vw;
-    min-width: 18.2292vw;
+    /* Glassmorphism effect */
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5vw;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    
+    padding: 0.8vw 1vw;
+    width: 20vw;
+    min-width: 20vw;
     display: flex;
     flex-direction: row;
-    gap: .5vw;
+    gap: 0.8vw;
     align-items: center;
     color: #fff;
     position: relative;
-    font-family: Inter;
+    font-family: 'Inter', sans-serif;
     pointer-events: auto;
+    
+    /* Smoother transition physics */
     opacity: 0;
-    transform: translateY(1.5vw) translate(120%);
-    transition: opacity .2s ease, transform 1.25s ease
+    transform: translateX(100%) scale(0.9);
+    transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
+                transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden; /* Ensures progress bar doesn't bleed out of rounded corners */
 }
 
 .Notification.enter {
     opacity: 1;
-    transform: translateY(0) translate(0)
+    transform: translateX(0) scale(1);
 }
 
 .Notification.exit {
     opacity: 0;
-    transform: translateY(1.5vw) translate(20%)
+    transform: translateX(50%) scale(0.9);
 }
 
 .Notification i {
-    margin-left: .5vw;
-    font-size: 1.25vw;
-    flex-shrink: 0
+    font-size: 1.4vw;
+    flex-shrink: 0;
+    opacity: 0.9;
 }
 
+/* Vertical Accent Strip */
 .Notification .NotificationBorder {
     position: absolute;
     top: 0;
     left: 0;
-    width: .35vw;
-    height: 100%
+    width: 0.25vw;
+    height: 100%;
+    background-color: #278cff; /* You can change this color per notification type */
 }
 
 .Notification .NotificationContent {
     display: flex;
     flex-direction: column;
-    gap: .25rem;
+    gap: 0.15vw;
     flex: 1;
-    min-width: 0
+    min-width: 0;
 }
 
 .Notification .NotificationTitle {
-    font-size: .7292vw;
-    font-weight: 700
+    font-size: 0.85vw;
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 
 .Notification .NotificationDesc {
-    font-size: .625vw;
+    font-size: 0.7vw;
     word-wrap: break-word;
-    color: #aaa
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
 }
 
+/* Progress Bar */
 .Notification .NotificationProgress {
     position: absolute;
-    display: flex;
     left: 0;
     right: 0;
     bottom: 0;
     width: 0%;
-    height: .2vw;
-    background-color: #278cff;
+    height: 0.2vw;
+    background: linear-gradient(90deg, #278cff, #00c6ff);
+    box-shadow: 0 0 10px rgba(39, 140, 255, 0.5);
     animation-name: progress;
-    animation-timing-function: linear
+    animation-timing-function: linear;
 }
 
 @keyframes progress {
