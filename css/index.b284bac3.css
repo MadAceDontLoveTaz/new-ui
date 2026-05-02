@@ -956,42 +956,42 @@ code {
     height: 0
 }
 
-.SpecContainer.MainLeft {
-    position: fixed;      /* Uses fixed to stay on screen during scroll */
-    left: 20px;           /* Moves it to the left side */
-    top: 150px;           /* Sets it below the top header area */
-    z-index: 9999;        /* Forces it to the front of all layers */
-    background: rgba(10, 10, 10, 0.85); 
-    border-radius: 4px;
-    min-width: 200px;
-    border-left: 3px solid #ff4444; /* Red accent bar on the left */
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+/* Mirroring the original Keybinds style exactly */
+.SpectatorLeft {
+    position: absolute;
+    left: 20px;          /* Same distance as right side */
+    top: 20px;           /* Same distance as top side */
+    z-index: 1000;
+    min-width: 150px;    /* Matches the compact look of image_1274f9.png */
 }
 
-.SpecHeader {
+/* Matching the thin red line and header from image_12daee.png */
+.SpectatorLeft .Header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    font-size: 13px;
+    gap: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(255, 0, 0, 0.8); /* That sharp red line */
+    color: white;
+    font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
 }
 
-.SpecRow {
+.SpectatorLeft .Header .Icon {
+    color: #ff0000; /* Red eye icon to match the red keyboard icon */
+}
+
+.SpectatorLeft .Keybind {
     display: flex;
     justify-content: space-between;
-    padding: 8px 12px;
-}
-
-.SpecName {
-    color: #ffffff;
-    font-size: 14px;
-}
-
-.SpecID {
-    color: rgba(255, 255, 255, 0.5);
+    padding: 4px 0px;
     font-size: 12px;
+    color: white;
+}
+
+.SpectatorLeft .Elements {
+    color: white;
+    font-weight: bold;
+    margin-left: 15px;
 }
