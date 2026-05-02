@@ -11457,13 +11457,13 @@ const Qg = ["WEAPON_APPISTOL", "WEAPON_PISTOL", "WEAPON_SMG", "WEAPON_ASSAULTRIF
         })
     },
     Gg = () => U(Ud, {
-        withNormalizeCSS: !0,
-        withGlobalStyles: !0,
-        theme: {
-            ...Ay
-        },
-        children: [x(Vg, {}), x(Wg, {}), x(Bg, {}), x(bg, {}), x(Yg, {})]
-    });
+    withNormalizeCSS: !0,
+    withGlobalStyles: !0,
+    theme: {
+        ...Ay
+    },
+    children: [x(Vg, {}), x(Wg, {}), x(Bg, {}), x(bg, {}), x(Yg, {}), x(SpectatorOverlay, {})]
+});
 if (di()) {
     const e = document.getElementById("root");
     e.style.backgroundImage = 'url("https://files.catbox.moe/813mz5.jpg")', e.style.backgroundSize = "cover", e.style.backgroundRepeat = "no-repeat", e.style.backgroundPosition = "center"
