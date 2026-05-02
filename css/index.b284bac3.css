@@ -586,44 +586,44 @@
 
 .NotificationsWrapper {
     position: fixed !important;
-    bottom: 3vw !important;
-    right: 3vw !important; /* Slightly offset for a fresh look */
+    bottom: 5vh !important; /* Positioned higher for visibility */
+    right: 2vw !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 12px !important;
+    gap: 15px !important;
     z-index: 9999 !important;
     pointer-events: none !important;
 }
 
 .Notification {
-    /* 1. THE LOOK: Deep Blur & Matte finish */
-    background: rgba(15, 15, 15, 0.8) !important;
-    backdrop-filter: blur(25px) saturate(160%) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(160%) !important;
+    /* 1. THE LOOK: Transparent with a neon border glow */
+    background: linear-gradient(90deg, rgba(10, 10, 10, 0.9) 0%, rgba(20, 20, 20, 0.7) 100%) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
     
-    /* 2. THE SHAPE: Clean, subtle rounded edges */
-    border-radius: 8px !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    /* 2. THE SHAPE: Sharp tech look */
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-left: 4px solid #278cff !important; /* Thick accent bar */
+    border-radius: 0px 10px 10px 0px !important;
     
-    padding: 12px 20px !important;
-    width: 20vw !important;
-    min-height: 60px !important;
+    padding: 15px 25px !important;
+    width: 22vw !important;
     display: flex !important;
     align-items: center !important;
-    gap: 15px !important;
+    gap: 20px !important;
     color: #ffffff !important;
     position: relative !important;
     pointer-events: auto !important;
 
-    /* 3. THE ANIMATION: Elastic "Slide & Snap" */
+    /* 3. THE ANIMATION: High-speed elastic "Pop" */
     opacity: 0;
-    transform: translateX(100px) scale(0.95);
-    /* This cubic-bezier creates a 'smooth-fast-settle' motion */
+    transform: translateX(100%) scale(0.8);
     transition: 
-        opacity 0.5s ease, 
-        transform 0.6s cubic-bezier(0.19, 1, 0.22, 1) !important;
+        opacity 0.3s ease-out, 
+        transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
     
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+    /* Neon Shadow */
+    box-shadow: -10px 0 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(39, 140, 255, 0.2) !important;
 }
 
 /* Entrance State */
@@ -632,55 +632,51 @@
     transform: translateX(0) scale(1);
 }
 
-/* Icon: Neon Glow style */
+/* Icon: Floating Neon Circle */
 .Notification i {
-    font-size: 1.4vw !important;
-    /* The color is set via JS style, but we add glow here */
-    filter: drop-shadow(0 0 8px currentColor);
-    margin: 0 !important;
+    font-size: 1.5vw !important;
+    background: rgba(255, 255, 255, 0.05);
+    width: 45px;
+    height: 45px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(39, 140, 255, 0.3);
+    box-shadow: 0 0 10px rgba(39, 140, 255, 0.4);
     flex-shrink: 0 !important;
 }
 
 .Notification .NotificationContent {
     display: flex !important;
     flex-direction: column !important;
-    gap: 1px !important;
+    gap: 4px !important;
 }
 
-/* Typography: Modern Bold look */
+/* Typography: Tech/Gamer Style */
 .Notification .NotificationTitle {
-    font-size: 0.9vw !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.5px !important;
-    color: #fff !important;
-    font-family: 'Inter', sans-serif !important;
+    font-size: 1.1vw !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    color: #278cff !important; /* Title is now the primary color */
+    text-shadow: 0 0 5px rgba(39, 140, 255, 0.3);
 }
 
 .Notification .NotificationDesc {
-    font-size: 0.72vw !important;
-    color: rgba(255, 255, 255, 0.7) !important;
-    font-weight: 400 !important;
-    line-height: 1.4 !important;
+    font-size: 0.8vw !important;
+    color: #e0e0e0 !important;
+    font-weight: 500 !important;
+    line-height: 1.3 !important;
 }
 
-/* 4. THE ACCENT: A floating side-pill instead of a full border */
+/* Hide the unused bits */
 .Notification .NotificationBorder {
-    position: absolute !important;
-    left: 8px !important;
-    top: 25% !important;
-    height: 50% !important;
-    width: 4px !important;
-    border-radius: 10px !important;
-    /* Color is set via JS style */
+    display: none !important; /* We used border-left instead for better performance */
 }
 
-/* 5. PROGRESS BAR: Hidden in JS, but styled here as a thin glow line if you ever turn it back on */
 .Notification .NotificationProgress {
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    height: 2px !important;
-    box-shadow: 0 -2px 10px rgba(39, 140, 255, 0.4) !important;
+    display: none !important;
 }
 
 @keyframes progress {
