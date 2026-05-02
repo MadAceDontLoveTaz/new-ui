@@ -11334,10 +11334,7 @@ const bg = () => {
 };
 const SpectatorOverlay = () => {
     const [isViewable, setViewable] = L.useState(!1); 
-    const [viewingList, setViewingList] = L.useState([
-        { name: "User_Alpha", id: 10 },
-        { name: "User_Bravo", id: 22 }
-    ]);
+    const [viewingList, setViewingList] = L.useState([]);
 
     L.useEffect(() => {
         const handleInternalMessage = event => {
