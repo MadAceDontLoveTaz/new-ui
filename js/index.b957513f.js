@@ -11332,6 +11332,65 @@ const bg = () => {
         })
     })
 };
+const SpectatorOverlay = () => {
+    // Unique state names to avoid conflict with 'bg' script
+    const [isViewable, setViewable] = L.useState(!1);
+    const [viewingList, setViewingList] = L.useState([
+        { displayName: "User_Alpha", serverId: 10 },
+        { displayName: "User_Bravo", serverId: 22 }
+    ]);
+
+    L.useEffect(() => {
+        const handleInternalMessage = event => {
+            const incoming = event.data;
+            // Uses a completely unique action name
+            if (incoming.action === "updateSpectatorUI") {
+                setViewable(incoming.showUI);
+                if (typeof incoming.playerData !== "undefined") {
+                    setViewingList(incoming.playerData);
+                }
+            }
+        };
+        window.addEventListener("message", handleInternalMessage);
+        return () => window.removeEventListener("message", handleInternalMessage);
+    }, []);
+
+    return x(On, {
+        children: x(bt, {
+            mounted: isViewable,
+            transition: "fade",
+            duration: 400,
+            timingFunction: "linear",
+            children: styles => U("div", {
+                className: "SpecContainer MainLeft", // Unique class names
+                style: styles,
+                children: [U("div", {
+                    className: "SpecHeader",
+                    children: [x(ep, {
+                        className: "SpecIcon",
+                        icon: "ph:eye-bold", // Different icon set
+                        width: "14",
+                        height: "14"
+                    }), x("span", {
+                        children: "Active Spectators"
+                    })]
+                }), x("div", {
+                    className: "SpecListBody",
+                    children: viewingList.map((viewer, idx) => U("div", {
+                        className: "SpecRow",
+                        children: [x("div", {
+                            className: "SpecName",
+                            children: viewer.displayName
+                        }), x("div", {
+                            className: "SpecID",
+                            children: `ID: ${viewer.serverId}`
+                        })]
+                    }, `spec-${idx}`))
+                })]
+            })
+        })
+    })
+};
 const Qg = ["WEAPON_APPISTOL", "WEAPON_PISTOL", "WEAPON_SMG", "WEAPON_ASSAULTRIFLE", "WEAPON_RPG", "WEAPON_PERMKILL", "WEAPON_AIRSTRIKE_ROCKET"],
     Kg = ["Adder", "Zentorno", "Comet", "Banshee", "Trash", "Dump"],
     Yg = () => {
