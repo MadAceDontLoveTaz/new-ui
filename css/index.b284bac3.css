@@ -582,13 +582,10 @@
     color: #fff
 }
 
-/* We use !important on key values to force the change if your script is stubborn */
-
 .NotificationsWrapper {
     position: fixed !important;
-    top: 50% !important; /* Move to center-right for a true HUD feel */
-    right: 20px !important;
-    transform: translateY(-50%) !important;
+    bottom: 3vh !important;
+    right: 1.5vw !important;
     display: flex !important;
     flex-direction: column !important;
     gap: 10px !important;
@@ -596,98 +593,103 @@
     pointer-events: none !important;
 }
 
+/* MAIN */
 .Notification {
-    /* 1. THE STRUCTURE: Sharp, skewed, and segmented */
-    background: rgba(5, 5, 5, 0.95) !important;
-    border: 2px solid #fff;
-    border-image: linear-gradient(to right, #278cff, transparent) 1;
-    clip-path: polygon(0 0, 100% 0, 100% 75%, 95% 100%, 0 100%) !important;
-    
-    padding: 0 !important; /* Controlled by internal divs */
-    width: 25vw !important;
-    min-height: 80px !important;
-    display: grid !important;
-    grid-template-columns: 6px 1fr !important;
-    color: #ffffff !important;
+    background: #111317 !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+    border-left: 3px solid #3aa0ff !important;
+
+    border-radius: 6px !important;
+
+    padding: 12px 16px !important;
+    width: 18vw !important;
+
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+
+    color: white !important;
     position: relative !important;
     pointer-events: auto !important;
 
-    /* 2. THE ANIMATION: Glitchy "Scanline" entry */
+    /* CLEAN FAST ANIMATION */
     opacity: 0;
-    filter: brightness(3) blur(10px);
-    transform: perspective(500px) rotateY(-30deg) translateX(50px);
+    transform: translateX(80%);
     transition: 
-        opacity 0.2s linear, 
-        transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-        filter 0.3s ease-in-out !important;
+        transform 0.25s ease,
+        opacity 0.2s ease !important;
 }
 
-/* Entrance State */
+/* ENTER */
 .Notification.enter {
     opacity: 1;
-    filter: brightness(1) blur(0px);
-    transform: perspective(500px) rotateY(0deg) translateX(0);
+    transform: translateX(0);
 }
 
-/* Tactical Vertical Bar */
-.Notification .NotificationBorder {
-    height: 100% !important;
-    width: 100% !important;
-    background: #278cff !important;
-    box-shadow: 0 0 15px #278cff !important;
+/* EXIT (optional if you use it) */
+.Notification.exit {
+    opacity: 0;
+    transform: translateX(100%);
 }
 
-.Notification .NotificationContent {
-    padding: 15px !important;
+/* ICON */
+.Notification i {
+    font-size: 16px !important;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 4px;
+    background: rgba(255,255,255,0.04);
+
+    flex-shrink: 0 !important;
+}
+
+/* TEXT */
+.NotificationContent {
     display: flex !important;
     flex-direction: column !important;
-    justify-content: center !important;
-    background: repeating-linear-gradient(
-        0deg,
-        rgba(255, 255, 255, 0.03) 0px,
-        rgba(255, 255, 255, 0.03) 1px,
-        transparent 1px,
-        transparent 2px
-    ) !important; /* Subtle scanline texture */
+    gap: 2px !important;
 }
 
-/* Typography: Monospace/Data style */
-.Notification .NotificationTitle {
-    font-family: 'Courier New', Courier, monospace !important;
-    font-size: 1.2vw !important;
-    font-weight: 900 !important;
-    text-transform: uppercase !important;
-    color: #fff !important;
-    margin-bottom: 4px !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-}
-
-/* Add a "SYSTEM" prefix before the title */
-.Notification .NotificationTitle::before {
-    content: "[LOG]" !important;
-    color: #278cff !important;
-    font-size: 0.7vw !important;
-    letter-spacing: 1px !important;
-}
-
-.Notification .NotificationDesc {
-    font-family: 'Courier New', Courier, monospace !important;
+.NotificationTitle {
     font-size: 0.85vw !important;
-    color: rgba(255, 255, 255, 0.8) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-    padding-top: 5px !important;
-    line-height: 1.2 !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
 }
 
-/* Hide the default icon, we replaced it with the ::before text */
-.Notification i {
-    display: none !important;
+.NotificationDesc {
+    font-size: 0.72vw !important;
+    color: rgba(255,255,255,0.6) !important;
 }
 
-.Notification .NotificationProgress {
-    display: none !important;
+/* SUBTLE PROGRESS BAR */
+.NotificationProgress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+}
+
+.NotificationProgress::after {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: #3aa0ff;
+    animation: progress 4s linear forwards;
+}
+
+/* SIMPLE PROGRESS */
+@keyframes progress {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
 }
 
 /* ANIMATIONS */
