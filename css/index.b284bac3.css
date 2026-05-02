@@ -584,135 +584,125 @@
 
 .NotificationsWrapper {
     position: fixed;
-    bottom: 1.5vw; /* Moved slightly off the edge for a cleaner look */
-    right: 1.5vw;
+    bottom: 1.2vw;
+    right: 1.2vw;
     display: flex;
     flex-direction: column;
-    gap: 0.75vw;
+    gap: 0.6vw;
     z-index: 9999;
     pointer-events: none;
 }
 
+/* CARD */
 .Notification {
-    /* Glassmorphism effect */
-    background: rgba(20, 20, 20, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.5vw;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    
-    padding: 0.8vw 1vw;
-    width: 20vw;
-    min-width: 20vw;
+    background: #0f1115;
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 0.4vw;
+
+    padding: 0.7vw 0.9vw;
+    width: 18vw;
+
     display: flex;
-    flex-direction: row;
-    gap: 0.8vw;
     align-items: center;
-    color: #fff;
-    position: relative;
+    gap: 0.7vw;
+
+    color: #eaeaea;
     font-family: 'Inter', sans-serif;
+
+    position: relative;
+    overflow: hidden;
     pointer-events: auto;
-    
-    /* Smoother transition physics */
+
+    /* ENTRY */
     opacity: 0;
-    transform: translateX(100%) scale(0.9);
-    transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
-                transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    overflow: hidden; /* Ensures progress bar doesn't bleed out of rounded corners */
+    transform: translateX(110%);
+    transition: 
+        transform 0.28s cubic-bezier(.2,.8,.2,1),
+        opacity 0.2s ease;
 }
 
+/* ENTER */
 .Notification.enter {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateX(0);
 }
 
+/* EXIT */
 .Notification.exit {
     opacity: 0;
-    transform: translateX(50%) scale(0.9);
+    transform: translateX(60%);
 }
 
-.Notification i {
-    font-size: 1.4vw;
-    flex-shrink: 0;
-    opacity: 0.9;
-}
-
-/* Vertical Accent Strip */
-.Notification .NotificationBorder {
+/* LEFT ACCENT (clean, no glow spam) */
+.Notification::before {
+    content: "";
     position: absolute;
-    top: 0;
     left: 0;
-    width: 0.25vw;
+    top: 0;
+    width: 0.2vw;
     height: 100%;
-    background-color: #278cff; /* You can change this color per notification type */
+    background: #3aa0ff;
 }
 
-.Notification .NotificationContent {
+/* ICON */
+.Notification i {
+    font-size: 1.1vw;
+    width: 1.8vw;
+    height: 1.8vw;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 0.3vw;
+    background: rgba(255,255,255,0.04);
+
+    flex-shrink: 0;
+}
+
+/* TEXT */
+.NotificationContent {
     display: flex;
     flex-direction: column;
-    gap: 0.15vw;
-    flex: 1;
+    gap: 0.1vw;
     min-width: 0;
 }
 
-.Notification .NotificationTitle {
-    font-size: 0.85vw;
+.NotificationTitle {
+    font-size: 0.75vw;
     font-weight: 600;
-    letter-spacing: 0.02em;
+    color: #ffffff;
 }
 
-.Notification .NotificationDesc {
-    font-size: 0.7vw;
-    word-wrap: break-word;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.4;
+.NotificationDesc {
+    font-size: 0.65vw;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.3;
 }
 
-/* Progress Bar */
-.Notification .NotificationProgress {
+/* PROGRESS (minimal, smooth) */
+.NotificationProgress {
     position: absolute;
-    left: 0;
-    right: 0;
     bottom: 0;
-    width: 0%;
-    height: 0.2vw;
-    background: linear-gradient(90deg, #278cff, #00c6ff);
-    box-shadow: 0 0 10px rgba(39, 140, 255, 0.5);
-    animation-name: progress;
-    animation-timing-function: linear;
+    left: 0;
+    height: 0.15vw;
+    width: 100%;
+    background: rgba(255,255,255,0.05);
 }
 
-/* SIMPLE PROGRESS */
-@keyframes progress {
+.NotificationProgress::after {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: #3aa0ff;
+    animation: notifProgress linear forwards;
+}
+
+/* PROGRESS ANIMATION */
+@keyframes notifProgress {
     from { transform: translateX(0); }
     to { transform: translateX(-100%); }
-}
-
-/* ANIMATIONS */
-@keyframes glowFlow {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 0% 200%; }
-}
-
-@keyframes shine {
-    0% { left: -60%; }
-    100% { left: 120%; }
-}
-
-@keyframes progressBar {
-    from { transform: translateX(0); }
-    to { transform: translateX(-100%); }
-}
-
-@keyframes progress {
-    0% {
-        width: 100%
-    }
-
-    to {
-        width: 0%
-    }
 }
 
 .Overlay {
