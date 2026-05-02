@@ -584,13 +584,15 @@
 
 .NotificationsWrapper {
     position: fixed;
-    bottom: 1.5vw; /* Moved slightly off the edge for a cleaner look */
+    bottom: 1.5vw;
     right: 1.5vw;
     display: flex;
     flex-direction: column;
     gap: 0.75vw;
     z-index: 9999;
     pointer-events: none;
+
+    background: transparent !important;   /* FIX */
 }
 
 .Notification {
