@@ -11147,7 +11147,9 @@ const Wg = () => {
             if (!s) return;
             requestAnimationFrame(() => {
                 s.offsetWidth, s.classList.add("enter")
-            }), r.current = window.setTimeout(() => a(), e.duration);
+            });
+
+            // Removed the timeout so it never calls the exit function 'a()'
 
             function u(m) {
                 m.target === s && (i.current = !0, h())
@@ -11193,6 +11195,7 @@ const Wg = () => {
             }), x("div", {
                 className: "NotificationProgress",
                 style: {
+                    display: "none", // Hidden because it won't be used
                     animationDuration: `${e.duration}ms`,
                     backgroundColor: e.type === "success" ? "#23ff2a" : e.type === "error" ? "#ff1100" : "rgb(39, 140, 255)"
                 }
