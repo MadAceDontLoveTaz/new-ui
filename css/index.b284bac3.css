@@ -586,97 +586,164 @@
 
 .NotificationsWrapper {
     position: fixed !important;
-    bottom: 5vh !important; /* Positioned higher for visibility */
+    bottom: 4vh !important;
     right: 2vw !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 15px !important;
+    gap: 12px !important;
     z-index: 9999 !important;
     pointer-events: none !important;
 }
 
+/* MAIN CARD */
 .Notification {
-    /* 1. THE LOOK: Transparent with a neon border glow */
-    background: linear-gradient(90deg, rgba(10, 10, 10, 0.9) 0%, rgba(20, 20, 20, 0.7) 100%) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    
-    /* 2. THE SHAPE: Sharp tech look */
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
-    border-left: 4px solid #278cff !important; /* Thick accent bar */
-    border-radius: 0px 10px 10px 0px !important;
-    
-    padding: 15px 25px !important;
-    width: 22vw !important;
+    background: rgba(15, 15, 20, 0.75) !important;
+    backdrop-filter: blur(14px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+
+    border-radius: 14px !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+
+    padding: 16px 20px !important;
+    width: 20vw !important;
+
     display: flex !important;
     align-items: center !important;
-    gap: 20px !important;
-    color: #ffffff !important;
+    gap: 16px !important;
+
+    color: white !important;
     position: relative !important;
+    overflow: hidden !important;
     pointer-events: auto !important;
 
-    /* 3. THE ANIMATION: High-speed elastic "Pop" */
+    /* ENTRY ANIMATION */
     opacity: 0;
-    transform: translateX(100%) scale(0.8);
-    transition: 
-        opacity 0.3s ease-out, 
-        transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
-    
-    /* Neon Shadow */
-    box-shadow: -10px 0 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(39, 140, 255, 0.2) !important;
+    transform: translateX(120%) rotate(2deg) scale(0.95);
+    filter: blur(8px);
+
+    transition:
+        transform 0.5s cubic-bezier(.2,.8,.2,1),
+        opacity 0.4s ease,
+        filter 0.4s ease;
 }
 
-/* Entrance State */
+/* ENTER STATE */
 .Notification.enter {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateX(0) rotate(0) scale(1);
+    filter: blur(0);
 }
 
-/* Icon: Floating Neon Circle */
+/* HOVER LIFT */
+.Notification:hover {
+    transform: translateX(0) scale(1.02);
+}
+
+/* GLOWING LEFT STRIP (animated) */
+.Notification::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, #278cff, #00e0ff, #278cff);
+    background-size: 100% 200%;
+    animation: glowFlow 3s linear infinite;
+}
+
+/* TOP LIGHT SWEEP */
+.Notification::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.15),
+        transparent
+    );
+    transform: skewX(-20deg);
+    animation: shine 4s infinite;
+}
+
+/* ICON */
 .Notification i {
-    font-size: 1.5vw !important;
-    background: rgba(255, 255, 255, 0.05);
-    width: 45px;
-    height: 45px;
+    font-size: 20px !important;
+
+    width: 42px;
+    height: 42px;
+
     display: flex !important;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    border: 1px solid rgba(39, 140, 255, 0.3);
-    box-shadow: 0 0 10px rgba(39, 140, 255, 0.4);
+
+    border-radius: 12px;
+    background: rgba(39,140,255,0.12);
+    border: 1px solid rgba(39,140,255,0.3);
+
+    box-shadow: 0 0 12px rgba(39,140,255,0.25);
+
     flex-shrink: 0 !important;
 }
 
-.Notification .NotificationContent {
+/* TEXT */
+.NotificationContent {
     display: flex !important;
     flex-direction: column !important;
     gap: 4px !important;
 }
 
-/* Typography: Tech/Gamer Style */
-.Notification .NotificationTitle {
-    font-size: 1.1vw !important;
-    font-weight: 900 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 2px !important;
-    color: #278cff !important; /* Title is now the primary color */
-    text-shadow: 0 0 5px rgba(39, 140, 255, 0.3);
+.NotificationTitle {
+    font-size: 0.95vw !important;
+    font-weight: 700 !important;
+    letter-spacing: 1px !important;
+    color: #5fb3ff !important;
 }
 
-.Notification .NotificationDesc {
-    font-size: 0.8vw !important;
-    color: #e0e0e0 !important;
-    font-weight: 500 !important;
+.NotificationDesc {
+    font-size: 0.75vw !important;
+    color: rgba(255,255,255,0.75) !important;
     line-height: 1.3 !important;
 }
 
-/* Hide the unused bits */
-.Notification .NotificationBorder {
-    display: none !important; /* We used border-left instead for better performance */
+/* PROGRESS BAR */
+.NotificationProgress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    overflow: hidden;
 }
 
-.Notification .NotificationProgress {
-    display: none !important;
+.NotificationProgress::after {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #278cff, #00e0ff);
+    animation: progressBar 5s linear forwards;
+}
+
+/* ANIMATIONS */
+@keyframes glowFlow {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 0% 200%; }
+}
+
+@keyframes shine {
+    0% { left: -60%; }
+    100% { left: 120%; }
+}
+
+@keyframes progressBar {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
 }
 
 @keyframes progress {
