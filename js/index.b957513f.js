@@ -11149,7 +11149,7 @@ const Wg = () => {
                 s.offsetWidth, s.classList.add("enter")
             });
 
-            // Removed the timeout so it never calls the exit function 'a()'
+            // Timer for 'a()' has been removed entirely so it never gets removed.
 
             function u(m) {
                 m.target === s && (i.current = !0, h())
@@ -11195,7 +11195,7 @@ const Wg = () => {
             }), x("div", {
                 className: "NotificationProgress",
                 style: {
-                    display: "none", // Hidden because it won't be used
+                    display: "none", // Bar is hidden as it won't be counting down
                     animationDuration: `${e.duration}ms`,
                     backgroundColor: e.type === "success" ? "#23ff2a" : e.type === "error" ? "#ff1100" : "rgb(39, 140, 255)"
                 }
