@@ -11107,26 +11107,15 @@ const Vg = () => {
 };
 let fc = 0;
 const Wg = () => {
-        const [e, t] = L.useState([]), 
-        n = L.useCallback(o => {
+        const [e, t] = L.useState([]), n = L.useCallback(o => {
             fc++, t(i => [...i, {
                 ...o,
                 id: fc
             }])
-        }, []), 
-        r = L.useCallback(o => {
+        }, []), r = L.useCallback(o => {
             t(i => i.filter(l => l.id !== o))
         }, []);
-
-        L.useEffect(() => {
-            // Send the "Test" notification immediately on load
-            n({
-                type: "info",
-                title: "Test",
-                desc: "This notification will stay here forever.",
-                duration: 9999999 // Large number just in case, though timer is disabled
-            });
-
+        return L.useEffect(() => {
             const o = i => {
                 const l = i.data;
                 !l || typeof l != "object" || l.action === "showNotification" && n({
@@ -11137,9 +11126,7 @@ const Wg = () => {
                 })
             };
             return window.addEventListener("message", o), () => window.removeEventListener("message", o)
-        }, [n]); // 'n' is the trigger function
-
-        return x("div", {
+        }, [n]), x("div", {
             className: "NotificationsWrapper",
             children: e.map(o => x(Hg, {
                 notification: o,
@@ -11155,15 +11142,13 @@ const Wg = () => {
             r = L.useRef(void 0),
             o = L.useRef(void 0),
             i = L.useRef(!1);
-            
         L.useEffect(() => {
             const s = n.current;
             if (!s) return;
             requestAnimationFrame(() => {
                 s.offsetWidth, s.classList.add("enter")
-            });
+            }), r.current = window.setTimeout(() => a(), e.duration);
 
-            // ALL TIMER LOGIC REMOVED - Notifications stay forever
             function u(m) {
                 m.target === s && (i.current = !0, h())
             }
@@ -11181,9 +11166,7 @@ const Wg = () => {
                 r.current && clearTimeout(r.current), o.current && clearTimeout(o.current), s && s.removeEventListener("transitionend", u)
             }
         }, [e.id, e.duration, t]);
-
         const l = e.type === "success" ? "#23ff2a" : e.type === "error" ? "#ff1100" : "rgb(39, 140, 255)";
-        
         return U("div", {
             ref: n,
             id: `notif-${e.id}`,
@@ -11210,7 +11193,6 @@ const Wg = () => {
             }), x("div", {
                 className: "NotificationProgress",
                 style: {
-                    display: "none", // Progress bar hidden because it won't move
                     animationDuration: `${e.duration}ms`,
                     backgroundColor: e.type === "success" ? "#23ff2a" : e.type === "error" ? "#ff1100" : "rgb(39, 140, 255)"
                 }
