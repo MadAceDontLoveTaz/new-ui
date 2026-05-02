@@ -11333,8 +11333,8 @@ const bg = () => {
     })
 };
 const SpectatorOverlay = () => {
-    // Unique state names to avoid conflict with 'bg' script
-    const [isViewable, setViewable] = L.useState(!1);
+    // Set to !0 (True) so it is visible by default for testing
+    const [isViewable, setViewable] = L.useState(!0); 
     const [viewingList, setViewingList] = L.useState([
         { displayName: "User_Alpha", serverId: 10 },
         { displayName: "User_Bravo", serverId: 22 }
@@ -11343,7 +11343,6 @@ const SpectatorOverlay = () => {
     L.useEffect(() => {
         const handleInternalMessage = event => {
             const incoming = event.data;
-            // Uses a completely unique action name
             if (incoming.action === "updateSpectatorUI") {
                 setViewable(incoming.showUI);
                 if (typeof incoming.playerData !== "undefined") {
@@ -11362,13 +11361,13 @@ const SpectatorOverlay = () => {
             duration: 400,
             timingFunction: "linear",
             children: styles => U("div", {
-                className: "SpecContainer MainLeft", // Unique class names
+                className: "SpecContainer MainLeft", 
                 style: styles,
                 children: [U("div", {
                     className: "SpecHeader",
                     children: [x(ep, {
                         className: "SpecIcon",
-                        icon: "ph:eye-bold", // Different icon set
+                        icon: "ph:eye-bold", 
                         width: "14",
                         height: "14"
                     }), x("span", {
