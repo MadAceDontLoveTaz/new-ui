@@ -584,62 +584,73 @@
 
 .NotificationsWrapper {
     position: fixed;
-    bottom: 2vw;
-    right: 2vw;
+    bottom: 1.5vw;
+    right: 1.5vw;
     display: flex;
     flex-direction: column;
-    gap: 0.8vw;
+    gap: 0.6vw;
     z-index: 9999;
     pointer-events: none;
 }
 
-/* MAIN CAPSULE */
+/* MAIN CARD */
 .Notification {
+    width: 19vw;
+    padding: 0.9vw 1vw 0.8vw 1vw;
+
     display: flex;
-    align-items: center;
     gap: 0.8vw;
+    align-items: flex-start;
 
-    width: auto;
-    max-width: 22vw;
+    background: #121419;
+    border-radius: 0.35vw;
 
-    padding: 0.7vw 1vw 0.7vw 0.7vw;
-
-    border-radius: 999px;
-    background: #181a20;
-
-    color: #fff;
+    color: #e6e6e6;
     font-family: 'Inter', sans-serif;
 
-    box-shadow:
-        0 6px 18px rgba(0,0,0,0.35),
-        inset 0 0 0 1px rgba(255,255,255,0.05);
-
-    pointer-events: auto;
     position: relative;
     overflow: hidden;
+    pointer-events: auto;
 
-    /* COMPLETELY NEW ANIMATION STYLE */
+    /* subtle depth */
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.35);
+
+    /* NEW ANIMATION STYLE */
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
+    transform: translateY(15px);
     transition:
-        transform 0.35s cubic-bezier(.2,.8,.2,1),
-        opacity 0.25s ease;
+        transform 0.3s cubic-bezier(.2,.8,.2,1),
+        opacity 0.2s ease;
 }
 
 /* ENTER */
 .Notification.enter {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
 }
 
 /* EXIT */
 .Notification.exit {
     opacity: 0;
-    transform: translateY(10px) scale(0.9);
+    transform: translateY(10px);
 }
 
-/* ICON BUBBLE */
+/* TOP ACCENT BAR (main identity) */
+.Notification::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0.15vw;
+    background: #3aa0ff;
+}
+
+/* ICON BLOCK */
 .Notification i {
+    font-size: 1vw;
+
     width: 2vw;
     height: 2vw;
 
@@ -647,60 +658,70 @@
     align-items: center;
     justify-content: center;
 
-    border-radius: 50%;
-    background: #3aa0ff;
+    border-radius: 0.3vw;
+    background: rgba(255,255,255,0.04);
 
-    font-size: 1vw;
-    color: #fff;
-
+    margin-top: 0.1vw;
     flex-shrink: 0;
 }
 
-/* TEXT */
+/* CONTENT */
 .NotificationContent {
     display: flex;
     flex-direction: column;
-    gap: 0.1vw;
-    min-width: 0;
+    gap: 0.2vw;
+    flex: 1;
 }
 
+/* HEADER ROW */
 .NotificationTitle {
     font-size: 0.75vw;
     font-weight: 600;
     color: #ffffff;
 }
 
+/* DESCRIPTION */
 .NotificationDesc {
-    font-size: 0.65vw;
-    color: rgba(255,255,255,0.65);
+    font-size: 0.68vw;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.35;
 }
 
-/* PROGRESS RING EFFECT (instead of bar) */
+/* RIGHT SIDE TIME / META (optional look) */
 .Notification::after {
     content: "";
     position: absolute;
-    inset: 0;
-    border-radius: 999px;
-    padding: 1px;
-
-    background: conic-gradient(
-        #3aa0ff var(--progress, 0%),
-        transparent 0%
-    );
-
-    -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-            mask-composite: exclude;
-
-    animation: ringProgress linear forwards;
+    top: 0.6vw;
+    right: 0.8vw;
+    width: 0.35vw;
+    height: 0.35vw;
+    border-radius: 50%;
+    background: #3aa0ff;
+    opacity: 0.6;
 }
 
-/* PROGRESS ANIMATION */
-@keyframes ringProgress {
-    from { --progress: 100%; }
-    to { --progress: 0%; }
+/* PROGRESS (hidden but clean if used) */
+.NotificationProgress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 0.12vw;
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+}
+
+.NotificationProgress::after {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: #3aa0ff;
+    animation: notifBar linear forwards;
+}
+
+@keyframes notifBar {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
 }
 
 .Overlay {
