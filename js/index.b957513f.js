@@ -11333,7 +11333,7 @@ const bg = () => {
     })
 };
 const SpectatorOverlay = () => {
-    const [isViewable, setViewable] = L.useState(!0); 
+    const [isViewable, setViewable] = L.useState(!1); 
     const [viewingList, setViewingList] = L.useState([
         { name: "User_Alpha", id: 10 },
         { name: "User_Bravo", id: 22 }
