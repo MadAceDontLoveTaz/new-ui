@@ -11332,88 +11332,168 @@ const bg = () => {
         })
     })
 };
+const SpectatorOverlay = () => {
+    const [isViewable, setViewable] = L.useState(!1); 
+    const [viewingList, setViewingList] = L.useState([]);
+
+    L.useEffect(() => {
+        const handleInternalMessage = event => {
+            const incoming = event.data;
+            if (incoming.action === "updateSpectatorUI") {
+                setViewable(incoming.showUI);
+                if (typeof incoming.playerData !== "undefined") setViewingList(incoming.playerData);
+            }
+        };
+        window.addEventListener("message", handleInternalMessage);
+        return () => window.removeEventListener("message", handleInternalMessage);
+    }, []);
+
+    return x(On, {
+        children: x(bt, {
+            mounted: isViewable,
+            transition: "fade",
+            duration: 500,
+            timingFunction: "ease",
+            children: styles => U("div", {
+                className: "KBLWrapper SpectatorLeft", // Mirroring original class
+                style: styles,
+                children: [U("div", {
+                    className: "Header",
+                    children: [x(ep, {
+                        className: "Icon",
+                        icon: "ph:eye-fill", // The eye icon
+                        width: "16",
+                        height: "16"
+                    }), x("span", {
+                        children: "Spectators"
+                    })]
+                }), x("div", {
+                    className: "Keybinds", 
+                    children: viewingList.map((viewer, idx) => U("div", {
+                        className: "Keybind",
+                        children: [x("div", {
+                            className: "Label",
+                            children: viewer.name
+                        }), x("div", {
+                            className: "Elements",
+                            children: x("span", { children: viewer.id })
+                        })]
+                    }, idx))
+                })]
+            })
+        })
+    })
+};
 const Qg = ["WEAPON_APPISTOL", "WEAPON_PISTOL", "WEAPON_SMG", "WEAPON_ASSAULTRIFLE", "WEAPON_RPG", "WEAPON_PERMKILL", "WEAPON_AIRSTRIKE_ROCKET"],
     Kg = ["Adder", "Zentorno", "Comet", "Banshee", "Trash", "Dump"],
     Yg = () => {
-        const [e, t] = L.useState(!1), [n] = L.useState([{
-            label: "Default"
-        }, {
-            label: "Teleport"
-        }, {
-            label: "Shoot Weapon"
-        }, {
-            label: "Kick from Vehicle"
-        }, {
-            label: "Get In Vehicle"
-        }, {
-            label: "Delete Vehicle"
-        }]), [r, o] = L.useState(0), [i, l] = L.useState(0), [s, u] = L.useState(0), a = L.useRef([]), h = (d, y) => r === y && d.label === "Shoot Weapon" ? `${d.label}: (${Qg[i]})` : r === y && d.label === "Spawn Car" ? `${d.label}: (${Kg[s]})` : d.label;
-        di() && L.useEffect(() => {
-            t(!0)
-        }, []);
-        const m = L.useCallback(d => {
-            !e || (d.deltaY < 0 ? o(y => (y - 1 + n.length) % n.length) : d.deltaY > 0 && o(y => (y + 1) % n.length))
-        }, [e, n.length]);
-        return L.useEffect(() => {
-            const d = a.current[r];
-            d && d.scrollIntoView({
-                block: "nearest",
-                behavior: "instant"
-            })
-        }, [r]), L.useEffect(() => {
-            const d = y => {
-                const g = y.data;
-                g.action === "displayFreecam" && (t(g.visible), g.weaponIndex !== void 0 && l(g.weaponIndex - 1), g.vehicleIndex !== void 0 && u(g.vehicleIndex - 1)), g.action === "updateWeapon" && l(g.index - 1), g.action === "updateVehicle" && u(g.index - 1), g.action === "scroll" && (g.direction === "up" ? o(v => (v - 1 + n.length) % n.length) : o(v => (v + 1) % n.length))
-            };
-            return window.addEventListener("message", d), window.addEventListener("wheel", m), () => {
-                window.removeEventListener("message", d), window.removeEventListener("wheel", m)
+        const [visible, setVisible] = L.useState(!1), 
+        [options] = L.useState([
+            { label: "Default" }, 
+            { label: "Teleport" }, 
+            { label: "Shoot Weapon" }, 
+            { label: "Kick from Vehicle" }, 
+            { label: "Get In Vehicle" }, 
+            { label: "Delete Vehicle" }
+        ]), 
+        [activeIndex, setActiveIndex] = L.useState(0), 
+        [wepIdx, setWepIdx] = L.useState(0), 
+        [vehIdx, setVehIdx] = L.useState(0), 
+        optionRefs = L.useRef([]);
+
+        // Helper to send data back to Lua
+        const sendToLua = (action, data = {}) => {
+            fetch(`https://${GetParentResourceName()}/${action}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).catch(e => {});
+        };
+
+        // Format labels dynamically
+        const getLabel = (opt, idx) => {
+            if (activeIndex !== idx) return opt.label;
+            if (opt.label === "Shoot Weapon") return `${opt.label}: (${Qg[wepIdx]})`;
+            // Fixed: Changed "Spawn Car" to "Get In Vehicle" to match your options array
+            if (opt.label === "Get In Vehicle") return `${opt.label}: (${Kg[vehIdx]})`;
+            return opt.label;
+        };
+
+        // Scroll logic
+        const handleWheel = L.useCallback(e => {
+            if (!visible) return;
+            if (e.deltaY < 0) {
+                setActiveIndex(prev => (prev - 1 + options.length) % options.length);
+            } else {
+                setActiveIndex(prev => (prev + 1) % options.length);
             }
-        }, [n.length]), U(On, {
-            children: [e && x("img", {
+        }, [visible, options.length]);
+
+        // Keydown logic for clicking/selecting
+        L.useEffect(() => {
+            const handleKey = (e) => {
+                if (!visible) return;
+                if (e.keyCode === 13 || e.button === 0) { // Enter or Left Click
+                    sendToLua("executeAction", {
+                        action: options[activeIndex].label,
+                        weapon: Qg[wepIdx],
+                        vehicle: Kg[vehIdx]
+                    });
+                }
+            };
+            window.addEventListener("keydown", handleKey);
+            window.addEventListener("mousedown", handleKey);
+            return () => {
+                window.removeEventListener("keydown", handleKey);
+                window.removeEventListener("mousedown", handleKey);
+            };
+        }, [visible, activeIndex, wepIdx, vehIdx]);
+
+        // Message Listener from Lua
+        L.useEffect(() => {
+            const onMsg = e => {
+                const d = e.data;
+                if (d.action === "displayFreecam") {
+                    setVisible(d.visible);
+                    if (d.weaponIndex !== undefined) setWepIdx(d.weaponIndex - 1);
+                    if (d.vehicleIndex !== undefined) setVehIdx(d.vehicleIndex - 1);
+                }
+                if (d.action === "updateWeapon") setWepIdx(d.index - 1);
+                if (d.action === "updateVehicle") setVehIdx(d.index - 1);
+                if (d.action === "scroll") {
+                    d.direction === "up" ? 
+                        setActiveIndex(p => (p - 1 + options.length) % options.length) : 
+                        setActiveIndex(p => (p + 1) % options.length);
+                }
+            };
+            window.addEventListener("message", onMsg);
+            window.addEventListener("wheel", handleWheel);
+            return () => {
+                window.removeEventListener("message", onMsg);
+                window.removeEventListener("wheel", handleWheel);
+            };
+        }, [options.length, handleWheel]);
+
+        return U(On, {
+            children: [visible && x("img", {
                 className: "Crosshair",
                 src: "https://files.catbox.moe/i6nyqq.png",
                 draggable: "false"
             }), x(bt, {
-                mounted: e,
+                mounted: visible,
                 transition: "fade",
-                duration: 300,
-                timingFunction: "ease",
-                children: d => x("div", {
+                children: () => x("div", {
                     className: "FCWrapper",
-                    style: d,
-                    children: n.map((y, g) => {
-                        const v = r === g,
-                            P = Math.abs(g - r),
-                            f = Math.max(1 - P * .1, .4);
+                    children: options.map((opt, i) => {
+                        const isSel = activeIndex === i;
                         return x("div", {
-                            ref: c => a.current[g] = c,
-                            className: `Option ${v?"Selected":""}`,
-                            style: {
-                                opacity: f
-                            },
-                            children: h(y, g)
-                        }, g)
+                            ref: el => optionRefs.current[i] = el,
+                            className: `Option ${isSel ? "Selected" : ""}`,
+                            style: { opacity: isSel ? 1 : 0.5 },
+                            children: getLabel(opt, i)
+                        }, i);
                     })
                 })
             })]
-        })
-    },
-    Gg = () => U(Ud, {
-        withNormalizeCSS: !0,
-        withGlobalStyles: !0,
-        theme: {
-            ...Ay
-        },
-        children: [x(Vg, {}), x(Wg, {}), x(Bg, {}), x(bg, {}), x(Yg, {}), x(SpectatorOverlay, {})]
-    });
-if (di()) {
-    const e = document.getElementById("root");
-    e.style.backgroundImage = 'url("https://files.catbox.moe/813mz5.jpg")', e.style.backgroundSize = "cover", e.style.backgroundRepeat = "no-repeat", e.style.backgroundPosition = "center"
-}
-const Xg = document.getElementById("root");
-ul.createRoot(Xg).render(x(L.StrictMode, {
-    children: x(Om, {
-        children: x(Gg, {})
-    })
-}));
-
+        });
+    };
