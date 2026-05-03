@@ -677,6 +677,114 @@
     }
 }
 
+.Overlay {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: #0009
+}
+
+.InputWrapper {
+    position: absolute;
+    display: flex;
+    left: 50%;
+    bottom: 8vw;
+    width: 26.0417vw;
+    height: auto;
+    transform: translate(-50%);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #0a0a0a;
+    font-family: Inter;
+    border-radius: .2604vw;
+    overflow: hidden
+}
+
+.InputWrapper .Header {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 1.3021vw;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    gap: .2604vw;
+    border-bottom: .0521vw solid rgb(var(--menu-color));
+    font-size: .625vw;
+    font-weight: 230;
+    color: #fff
+}
+
+.InputWrapper .Header img {
+    width: 1.4583vw;
+    height: 1.25vw;
+    margin-left: .3vw;
+    margin-right: -.25vw
+}
+
+.InputWrapper .Header .Line {
+    width: .0521vw;
+    height: .7813vw;
+    background-color: #ffffff40
+}
+
+.InputWrapper .Header i {
+    margin-left: .5vw
+}
+
+.InputWrapper .Body {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 1.8229vw;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: .2604vw;
+    background-color: #0f0f0f;
+    font-size: .625vw;
+    font-weight: 230;
+    color: #fff
+}
+
+.InputWrapper .Body .InsideCon {
+    position: absolute;
+    display: flex;
+    width: 98.25%;
+    height: 72%;
+    margin-bottom: .0521vw;
+    background-color: #191919;
+    border-radius: .1042vw;
+    justify-content: flex-start;
+    align-items: center
+}
+
+.InputWrapper .Body span {
+    position: absolute;
+    display: flex;
+    left: .45vw
+}
+
+.InputWrapper .Body .InsideCon span:after {
+    content: "";
+    display: inline-block;
+    width: .0521vw;
+    height: .6vw;
+    background-color: #fff;
+    margin-left: .1vw;
+    margin-bottom: .0521vw;
+    animation: blink 1s steps(2, start) infinite;
+    align-self: center
+}
+
+@keyframes blink {
+    to {
+        visibility: hidden
+    }
+}
+
 .KBLWrapper {
     position: absolute;
     display: flex;
