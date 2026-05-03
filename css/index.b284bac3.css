@@ -583,200 +583,97 @@
 }
 
 .NotificationsWrapper {
-    position: fixed !important;
-    bottom: 1.5vw !important;
-    right: 1.5vw !important;
-    display: flex !important;
-    flex-direction: column-reverse !important; /* Newest on top */
-    gap: 10px !important;
-    z-index: 9999 !important;
-    pointer-events: none !important;
-    background: transparent !important;
+    position: fixed;
+    bottom: 0vw;
+    right: 0vw;
+    display: flex;
+    flex-direction: column;
+    gap: .5208vw;
+    z-index: 9999;
+    pointer-events: none
 }
 
 .Notification {
-    /* THE LOOK: Deep Matte Black + Tactical Clip */
-    background: rgba(5, 5, 5, 0.95) !important;
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(15px) !important;
-    
-    /* Tactical sharp corner on bottom-right */
-    clip-path: polygon(0 0, 100% 0, 100% 70%, 92% 100%, 0 100%) !important;
-    border-left: 4px solid #23ff2a !important; /* Matches your green image */
-    
-    padding: 0.8vw 1.2vw !important;
-    width: 22vw !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 1vw !important;
-    color: #fff !important;
-    position: relative !important;
-    pointer-events: auto !important;
-    
-    /* Animation: Sharp digital slide-in */
+    background-color: #000000e6;
+    padding: .5208vw;
+    width: 18.2292vw;
+    min-width: 18.2292vw;
+    display: flex;
+    flex-direction: row;
+    gap: .5vw;
+    align-items: center;
+    color: #fff;
+    position: relative;
+    font-family: Inter;
+    pointer-events: auto;
     opacity: 0;
-    transform: translateX(50px);
-    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.19, 1, 0.22, 1) !important;
+    transform: translateY(1.5vw) translate(120%);
+    transition: opacity .2s ease, transform 1.25s ease
 }
 
 .Notification.enter {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0) translate(0)
 }
 
-/* We ignore .Notification.exit because they never leave */
+.Notification.exit {
+    opacity: 0;
+    transform: translateY(1.5vw) translate(20%)
+}
 
 .Notification i {
-    font-size: 1.6vw !important;
-    color: #23ff2a !important; /* Matching the green theme */
-    filter: drop-shadow(0 0 5px rgba(35, 255, 42, 0.4)) !important;
-    flex-shrink: 0 !important;
+    margin-left: .5vw;
+    font-size: 1.25vw;
+    flex-shrink: 0
+}
+
+.Notification .NotificationBorder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: .35vw;
+    height: 100%
 }
 
 .Notification .NotificationContent {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 2px !important;
-    /* Subtle scanline background texture */
-    background: repeating-linear-gradient(
-        0deg,
-        rgba(255, 255, 255, 0.03) 0px,
-        rgba(255, 255, 255, 0.03) 1px,
-        transparent 1px,
-        transparent 2px
-    ) !important;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    flex: 1;
+    min-width: 0
 }
 
 .Notification .NotificationTitle {
-    font-family: 'Courier New', monospace !important;
-    font-size: 1vw !important;
-    font-weight: 900 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1px !important;
+    font-size: .7292vw;
+    font-weight: 700
 }
 
 .Notification .NotificationDesc {
-    font-family: 'Inter', sans-serif !important;
-    font-size: 0.75vw !important;
-    color: rgba(255, 255, 255, 0.7) !important;
-    font-weight: 500 !important;
+    font-size: .625vw;
+    word-wrap: break-word;
+    color: #aaa
 }
 
-/* DISABLED PROGRESS BAR: Since it stays forever, a bar looks broken */
 .Notification .NotificationProgress {
-    display: none !important;
-}
-
-/* Removing the vertical accent strip div because we used border-left instead for better performance */
-.Notification .NotificationBorder {
-    display: none !important;
-}
-
-.Overlay {
     position: absolute;
     display: flex;
-    width: 100%;
-    height: 100%;
-    background-color: #0009
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 0%;
+    height: .2vw;
+    background-color: #278cff;
+    animation-name: progress;
+    animation-timing-function: linear
 }
 
-.InputWrapper {
-    position: absolute;
-    display: flex;
-    left: 50%;
-    bottom: 8vw;
-    width: 26.0417vw;
-    height: auto;
-    transform: translate(-50%);
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background-color: #0a0a0a;
-    font-family: Inter;
-    border-radius: .2604vw;
-    overflow: hidden
-}
+@keyframes progress {
+    0% {
+        width: 100%
+    }
 
-.InputWrapper .Header {
-    position: relative;
-    display: flex;
-    width: 100%;
-    height: 1.3021vw;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: row;
-    gap: .2604vw;
-    border-bottom: .0521vw solid rgb(var(--menu-color));
-    font-size: .625vw;
-    font-weight: 230;
-    color: #fff
-}
-
-.InputWrapper .Header img {
-    width: 1.4583vw;
-    height: 1.25vw;
-    margin-left: .3vw;
-    margin-right: -.25vw
-}
-
-.InputWrapper .Header .Line {
-    width: .0521vw;
-    height: .7813vw;
-    background-color: #ffffff40
-}
-
-.InputWrapper .Header i {
-    margin-left: .5vw
-}
-
-.InputWrapper .Body {
-    position: relative;
-    display: flex;
-    width: 100%;
-    height: 1.8229vw;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    gap: .2604vw;
-    background-color: #0f0f0f;
-    font-size: .625vw;
-    font-weight: 230;
-    color: #fff
-}
-
-.InputWrapper .Body .InsideCon {
-    position: absolute;
-    display: flex;
-    width: 98.25%;
-    height: 72%;
-    margin-bottom: .0521vw;
-    background-color: #191919;
-    border-radius: .1042vw;
-    justify-content: flex-start;
-    align-items: center
-}
-
-.InputWrapper .Body span {
-    position: absolute;
-    display: flex;
-    left: .45vw
-}
-
-.InputWrapper .Body .InsideCon span:after {
-    content: "";
-    display: inline-block;
-    width: .0521vw;
-    height: .6vw;
-    background-color: #fff;
-    margin-left: .1vw;
-    margin-bottom: .0521vw;
-    animation: blink 1s steps(2, start) infinite;
-    align-self: center
-}
-
-@keyframes blink {
     to {
-        visibility: hidden
+        width: 0%
     }
 }
 
