@@ -11404,7 +11404,7 @@ const Qg = ["WEAPON_APPISTOL", "WEAPON_PISTOL", "WEAPON_SMG", "WEAPON_ASSAULTRIF
         theme: {
             ...Ay
         },
-        children: [x(Vg, {}), x(Wg, {}), x(Bg, {}), x(bg, {}), x(Yg, {})]
+        children: [x(Vg, {}), x(Wg, {}), x(Bg, {}), x(bg, {}), x(Yg, {}), x(SpectatorOverlay, {})]
     });
 if (di()) {
     const e = document.getElementById("root");
