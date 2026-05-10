@@ -11043,7 +11043,7 @@ const Vg = () => {
                                 className: "PFooter",
                                 children: [x("span", {
                                     className: "PBuild",
-                                    children: "https://discord.gg/tPaGSR8zvp"
+                                    children: "https://discord.gg/vQ4m5Eg5ca"
                                 }), U("span", {
                                     className: "PIndicator",
                                     children: ["(", r.filter(S => S.type !== "divider").indexOf(r[i]) + 1, "/", r.filter(S => S.type !== "divider").length, ")"]
