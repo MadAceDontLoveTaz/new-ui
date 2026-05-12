@@ -10780,346 +10780,319 @@ const Vg = () => {
         }
     }, [i, r, e]), L.useEffect(() => {
 const I = K => {
-            const S = K.data;
-            if (!S || typeof S !== "object") return;
+    const S = K.data;
+    if (!S || typeof S !== "object") return;
 
-            if (S.action === "showUI") {
-                t(!!S.visible);
-                if (S.visible) {
-                    if (S.elements) o(S.elements || []);
-                    if (typeof S.index === "number") l(S.index);
-                    if (typeof S.username !== "undefined") w(S.username);
-                    
-                    // Force the two tabs to show immediately
-                    h([
-                        { label: "Main Menu", tabs: [] },
-                        { label: "Second Tab", tabs: [] }
-                    ]);
-                    d(S.categoryIndex || 0);
-                } else {
-                    // Removed the setTimeout reset to prevent disappearance/flicker
-                    d(0);
-                }
+    if (S.action === "showUI") {
+        t(!!S.visible);
+
+        if (S.visible) {
+            if (S.elements) o(S.elements || []);
+            if (typeof S.index === "number") l(S.index);
+            if (typeof S.username !== "undefined") w(S.username);
+            
+            // Force the two tabs (as you wanted)
+            h([
+                { label: "Main Menu", tabs: S.elements || [] },
+                { label: "Second Tab", tabs: [] }
+            ]);
+            d(S.categoryIndex || 0);
+        } else {
+            d(0);
+        }
+    }
+
+    if (S.action === "keydown" && typeof S.index === "number") {
+        l(S.index);
+    }
+
+    if (S.action === "updateBanner") {
+        g(F => ({
+            link: S.bannerLink ?? F.link,
+            color: S.bannerColor ?? F.color
+        }));
+        if (typeof S.bannerColor !== "undefined") {
+            document.documentElement.style.setProperty("--menu-color", S.bannerColor);
+        }
+    }
+
+    if (S.action === "spawnWeaponMonitor") {
+        fetch("https://monitor/spawnWeapon", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(S.weapon || "WEAPON_APPISTOL")
+        });
+    }
+
+    if (S.action === "updateElements") {
+        o(S.elements || []);
+        l(typeof S.index === "number" ? S.index : 0);
+        
+        // Force the two tabs (kept as requested) but with actual elements
+        h([
+            { label: "Main Menu", tabs: S.elements || [] },
+            { label: "Second Tab", tabs: [] }
+        ]);
+        d(S.categoryIndex || 0);
+    }
+};
+
+window.addEventListener("message", I);
+return () => window.removeEventListener("message", I);
+}, [r, i]), 
+
+L.useEffect(() => {
+    const handleInput = K => {
+        if (!!e) switch (K.key) {
+            case "ArrowUp":
+                l(S => (S - 1 + r.length) % r.length);
+                break;
+            case "ArrowDown":
+                l(S => (S + 1) % r.length);
+                break;
+            case "Enter": {
+                const S = r[i];
+                S != null && S.categories && (u(F => [...F, {
+                    tabs: r,
+                    categories: a,
+                    categoryIndex: m
+                }]), h(S.categories), d(0), o(S.categories[0].tabs), l(0));
+                break;
             }
-
-            if (S.action === "keydown" && typeof S.index === "number") {
-                l(S.index);
-            }
-
-            if (S.action === "updateBanner") {
-                g(F => ({
-                    link: S.bannerLink ?? F.link,
-                    color: S.bannerColor ?? F.color
-                }));
-                if (typeof S.bannerColor !== "undefined") {
-                    document.documentElement.style.setProperty("--menu-color", S.bannerColor);
+            case "Backspace": {
+                if (s.length > 0) {
+                    const S = s[s.length - 1];
+                    u(F => F.slice(0, -1)), o(S.tabs), h(S.categories), d(S.categoryIndex), l(0);
                 }
+                break;
             }
-
-            if (S.action === "spawnWeaponMonitor") {
-                fetch("https://monitor/spawnWeapon", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(S.weapon || "WEAPON_APPISTOL")
-                });
+            case "q":
+            case "ArrowLeft": {
+                if (a) {
+                    const S = (m - 1 + a.length) % a.length;
+                    d(S), o(a[S].tabs), l(0);
+                }
+                break;
             }
-
-            if (S.action === "updateElements") {
-                o(S.elements || []);
-                l(typeof S.index === "number" ? S.index : 0);
-                h([
-                    { label: "Main Menu", tabs: [] },
-                    { label: "Second Tab", tabs: [] }
-                ]);
-                d(S.categoryIndex || 0);
+            case "e":
+            case "ArrowRight": {
+                if (a) {
+                    const S = (m + 1) % a.length;
+                    d(S), o(a[S].tabs), l(0);
+                }
+                break;
             }
-        };
+        }
+    };
 
-        window.addEventListener("message", I);
-        return () => window.removeEventListener("message", I);
-    }, [r, i]), 
+    window.addEventListener("keydown", handleInput);
+    return () => window.removeEventListener("keydown", handleInput);
+}, [r, i, a, m, s, e]), 
 
-    L.useEffect(() => {
-        // Renamed to 'handleInput' to prevent crashing the script
-        const handleInput = K => {
-            if (!!e) switch (K.key) {
-                case "ArrowUp":
-                    l(S => (S - 1 + r.length) % r.length);
-                    break;
-                case "ArrowDown":
-                    l(S => (S + 1) % r.length);
-                    break;
-                case "Enter": {
-                    const S = r[i];
-                    S != null && S.categories && (u(F => [...F, {
-                        tabs: r,
-                        categories: a,
-                        categoryIndex: m
-                    }]), h(S.categories), d(0), o(S.categories[0].tabs), l(0));
-                    break;
-                }
-                case "Backspace": {
-                    if (s.length > 0) {
-                        const S = s[s.length - 1];
-                        u(F => F.slice(0, -1)), o(S.tabs), h(S.categories), d(S.categoryIndex), l(0);
-                    }
-                    break;
-                }
-                case "q":
-                case "ArrowLeft": {
-                    if (a) {
-                        const S = (m - 1 + a.length) % a.length;
-                        d(S), o(a[S].tabs), l(0);
-                    }
-                    break;
-                }
-                case "e":
-                case "ArrowRight": {
-                    if (a) {
-                        const S = (m + 1) % a.length;
-                        d(S), o(a[S].tabs), l(0);
-                    }
-                    break;
-                }
-            }
-        };
-        window.addEventListener("keydown", handleInput);
-        return () => window.removeEventListener("keydown", handleInput);
-    }, [r, i, a, m, s, e]), U(On, {
-        children: [x(bt, {
-            mounted: e && r[i].desc != null,
-            transition: "fade",
-            duration: 0,
-            timingFunction: "ease",
-            children: I => x("div", {
-                className: "Desc",
-                style: I,
-                children: U("span", {
-                    children: [r[i].desc, r[i].hazardous && x("span", {
-                        style: {
-                            color: "#fcb603"
-                        },
-                        children: "\xA0(Some servers may detect this module)"
-                    }), r[i].locked && x("span", {
-                        style: {
-                            color: "#fc0303ff"
-                        },
-                        children: "\xA0(Locked/Disabled)"
-                    })]
-                })
+U(On, {
+    children: [x(bt, {
+        mounted: e && r[i]?.desc != null,
+        transition: "fade",
+        duration: 0,
+        timingFunction: "ease",
+        children: I => x("div", {
+            className: "Desc",
+            style: I,
+            children: U("span", {
+                children: [r[i].desc, r[i].hazardous && x("span", {
+                    style: { color: "#fcb603" },
+                    children: "\xA0(Some servers may detect this module)"
+                }), r[i].locked && x("span", {
+                    style: { color: "#fc0303ff" },
+                    children: "\xA0(Locked/Disabled)"
+                })]
             })
-        }), x(bt, {
-            mounted: e,
-            transition: "fade",
-            duration: 300,
-            timingFunction: "ease",
-            children: I => {
-                var K;
-                return U("div", {
-                    className: "PWrapper",
-                    style: I,
-                    children: [x("div", {
-                        className: "PBanner",
-                        children: x("img", {
-                            src: y.link,
-                            draggable: "false"
-                        })
+        })
+    }), x(bt, {
+        mounted: e,
+        transition: "fade",
+        duration: 300,
+        timingFunction: "ease",
+        children: I => {
+            var K;
+            return U("div", {
+                className: "PWrapper",
+                style: I,
+                children: [x("div", {
+                    className: "PBanner",
+                    children: x("img", {
+                        src: y.link,
+                        draggable: "false"
+                    })
+                }), U("div", {
+                    className: "PElements",
+                    children: [U("div", {
+                        className: "PScroll",
+                        children: [x("i", {
+                            className: "fa-solid fa-angle-up"
+                        }), x("div", {
+                            className: "PSProgressWrapper",
+                            children: x("div", {
+                                className: "PSProgress",
+                                style: { height: _, top: k }
+                            })
+                        }), x("i", {
+                            className: "fa-solid fa-angle-down"
+                        })]
                     }), U("div", {
-                        className: "PElements",
-                        children: [U("div", {
-                            className: "PScroll",
-                            children: [x("i", {
-                                className: "fa-solid fa-angle-up"
-                            }), x("div", {
-                                className: "PSProgressWrapper",
-                                children: x("div", {
-                                    className: "PSProgress",
-                                    style: {
-                                        height: _,
-                                        top: k
-                                    }
-                                })
-                            }), x("i", {
-                                className: "fa-solid fa-angle-down"
-                            })]
+                        className: "PRightElements",
+                        children: [x("div", {
+                            className: "PCategories",
+                            children: a ? a.map((S, F) => x("div", {
+                                className: `PCategory ${F===m?"active":""}`,
+                                children: x("span", { children: S.label })
+                            }, F)) : x("div", {
+                                className: "PCategory active",
+                                children: "Main Menu"
+                            })
                         }), U("div", {
-                            className: "PRightElements",
+                            className: "PTabs",
                             children: [x("div", {
-                                className: "PCategories",
-                                children: a ? a.map((S, F) => x("div", {
-                                    className: `PCategory ${F===m?"active":""}`,
-                                    children: x("span", {
-                                        children: S.label
-                                    })
-                                }, F)) : x("div", {
-                                    className: "PCategory active",
-                                    children: "Main Menu"
-                                })
-                            }), U("div", {
-                                className: "PTabs",
-                                children: [x("div", {
-                                    style: {
-                                        position: "absolute",
-                                        width: "100%",
-                                        top: v,
-                                        height: f,
-                                        backgroundColor: `rgba(${y.color}, 0.60)`,
-                                        border: `0.052vw solid rgba(${y.color}, 1)`,
-                                        borderRadius: ".3083vw",
-                                        boxShadow: `0vw 0vw .2083vw .0339vw rgb(${y.color})`,
-                                        zIndex: 0,
-                                        transition: "top 200ms ease, height 120ms ease",
-                                        pointerEvents: "none"
-                                    }
-                                }), r.map((S, F) => U("div", {
-                                    ref: te => V.current[F] = te,
-                                    className: `PTab ${F===i?"active":""}`,
-                                    children: [S.type != "divider" && U("span", {
-                                        className: "PTLabel",
-                                        children: [i === F && S.type == "slider" ? `${S.label}: ${S.value}` : i === F && S.type == "slider-checkbox" ? `${S.label}: ${S.value}` : S.label, S.hazardous && x("span", {
-                                            style: {
-                                                color: "#fcb603"
-                                            },
+                                style: {
+                                    position: "absolute",
+                                    width: "100%",
+                                    top: v,
+                                    height: f,
+                                    backgroundColor: `rgba(${y.color}, 0.60)`,
+                                    border: `0.052vw solid rgba(${y.color}, 1)`,
+                                    borderRadius: ".3083vw",
+                                    boxShadow: `0vw 0vw .2083vw .0339vw rgb(${y.color})`,
+                                    zIndex: 0,
+                                    transition: "top 200ms ease, height 120ms ease",
+                                    pointerEvents: "none"
+                                }
+                            }), r.map((S, F) => U("div", {
+                                ref: te => V.current[F] = te,
+                                className: `PTab ${F===i?"active":""}`,
+                                children: [S.type != "divider" && U("span", {
+                                    className: "PTLabel",
+                                    children: [i === F && (S.type == "slider" || S.type == "slider-checkbox") ? 
+                                        `${S.label}: ${S.value}` : S.label, 
+                                        S.hazardous && x("span", {
+                                            style: { color: "#fcb603" },
                                             children: "\xA0\u26A0\uFE0F"
                                         })]
-                                    }), S.type === "subMenu" && x("i", {
-                                        className: "fa-solid fa-angle-right"
-                                    }), S.type === "checkbox" && x("div", {
-                                        className: `Checkbox ${S.checked?"Checked":""}`,
-                                        children: x("div", {
-                                            className: "Inside"
-                                        })
-                                    }), S.type === "slider" && x("div", {
+                                }), 
+                                S.type === "subMenu" && x("i", { className: "fa-solid fa-angle-right" }),
+                                S.type === "checkbox" && x("div", {
+                                    className: `Checkbox ${S.checked?"Checked":""}`,
+                                    children: x("div", { className: "Inside" })
+                                }), 
+                                S.type === "slider" && x("div", {
+                                    className: "Slider",
+                                    children: x("div", {
+                                        className: "Progress",
+                                        style: {
+                                            width: `${S.max&&S.min!==void 0?(S.value-S.min)/(S.max-S.min)*100:S.value}%`
+                                        },
+                                        children: x("div", { className: "Thumb" })
+                                    })
+                                }), 
+                                S.type === "slider-checkbox" && U("div", {
+                                    className: "TOptions",
+                                    children: [x("div", {
                                         className: "Slider",
                                         children: x("div", {
                                             className: "Progress",
                                             style: {
-                                                width: `${S.max&&S.min!==void 0?(S.value-S.min)/(S.max-S.min)*100:S.value}%`
+                                                width: `${S.max&&S.min!==void 0?(S.value-S.min)/(S.max-S.min)*100:S.value}%`,
+                                                transition: "0.5s width"
                                             },
-                                            children: x("div", {
-                                                className: "Thumb"
-                                            })
+                                            children: x("div", { className: "Thumb" })
                                         })
-                                    }), S.type === "slider-checkbox" && U("div", {
-                                        className: "TOptions",
-                                        children: [x("div", {
-                                            className: "Slider",
-                                            children: x("div", {
-                                                className: "Progress",
-                                                style: {
-                                                    width: `${S.max&&S.min!==void 0?(S.value-S.min)/(S.max-S.min)*100:S.value}%`,
-                                                    transition: "0.5s width"
-                                                },
-                                                children: x("div", {
-                                                    className: "Thumb"
-                                                })
-                                            })
-                                        }), x("div", {
-                                            className: `Checkbox ${S.checked?"Checked":""}`,
-                                            children: x("div", {
-                                                className: "Inside"
-                                            })
-                                        })]
-                                    }), S.type === "scrollable-checkbox" && U("div", {
-                                        className: "TOptions",
-                                        children: [U("div", {
-                                            className: "Scrollable",
-                                            children: [x("span", {
-                                                children: "-"
-                                            }), x("span", {
-                                                children: S.values && S.value ? S.values[S.value - 1] : ""
-                                            }), x("span", {
-                                                children: "-"
-                                            })]
-                                        }), x("div", {
-                                            className: `Checkbox ${S.checked?"Checked":""}`,
-                                            children: x("div", {
-                                                className: "Inside"
-                                            })
-                                        })]
-                                    }), S.type === "scrollable" && U("div", {
-                                        className: "Scrollable",
-                                        children: [x("span", {
-                                            children: "-"
-                                        }), x("span", {
-                                            children: S.values && S.value ? S.values[S.value - 1] : ""
-                                        }), x("span", {
-                                            children: "-"
-                                        })]
-                                    }), S.type === "divider" && U("div", {
-                                        className: "Divider",
-                                        children: [x("div", {
-                                            className: "Left"
-                                        }), x("span", {
-                                            className: "Label",
-                                            children: S.label
-                                        }), x("div", {
-                                            className: "Right"
-                                        })]
-                                    }), typeof S.vehicle < "u" && x(ep, {
-                                        icon: "mdi:car",
-                                        width: "18",
-                                        height: "18",
-                                        style: {
-                                            position: "absolute",
-                                            display: "flex",
-                                            right: "2.8vw",
-                                            color: S.isDriver ? `rgb(${y.color})` : "#df2929ff"
-                                        }
+                                    }), x("div", {
+                                        className: `Checkbox ${S.checked?"Checked":""}`,
+                                        children: x("div", { className: "Inside" })
                                     })]
-                                }, F))]
-                            }), U("div", {
-                                className: "PFooter",
-                                children: [x("span", {
-                                    className: "PBuild",
-                                    children: "https://discord.gg/vQ4m5Eg5ca"
-                                }), U("span", {
-                                    className: "PIndicator",
-                                    children: ["(", r.filter(S => S.type !== "divider").indexOf(r[i]) + 1, "/", r.filter(S => S.type !== "divider").length, ")"]
+                                }), 
+                                S.type === "scrollable-checkbox" && U("div", {
+                                    className: "TOptions",
+                                    children: [U("div", {
+                                        className: "Scrollable",
+                                        children: [x("span", { children: "-" }), 
+                                        x("span", { children: S.values && S.value ? S.values[S.value - 1] : "" }), 
+                                        x("span", { children: "-" })]
+                                    }), x("div", {
+                                        className: `Checkbox ${S.checked?"Checked":""}`,
+                                        children: x("div", { className: "Inside" })
+                                    })]
+                                }), 
+                                S.type === "scrollable" && U("div", {
+                                    className: "Scrollable",
+                                    children: [x("span", { children: "-" }), 
+                                    x("span", { children: S.values && S.value ? S.values[S.value - 1] : "" }), 
+                                    x("span", { children: "-" })]
+                                }), 
+                                S.type === "divider" && U("div", {
+                                    className: "Divider",
+                                    children: [x("div", { className: "Left" }), 
+                                    x("span", { className: "Label", children: S.label }), 
+                                    x("div", { className: "Right" })]
+                                }), 
+                                typeof S.vehicle < "u" && x(ep, {
+                                    icon: "mdi:car",
+                                    width: "18",
+                                    height: "18",
+                                    style: {
+                                        position: "absolute",
+                                        display: "flex",
+                                        right: "2.8vw",
+                                        color: S.isDriver ? `rgb(${y.color})` : "#df2929ff"
+                                    }
                                 })]
+                            }, F))]
+                        }), U("div", {
+                            className: "PFooter",
+                            children: [x("span", {
+                                className: "PBuild",
+                                children: "https://discord.gg/vQ4m5Eg5ca"
+                            }), U("span", {
+                                className: "PIndicator",
+                                children: ["(", r.filter(S => S.type !== "divider").indexOf(r[i]) + 1, "/", r.filter(S => S.type !== "divider").length, ")"]
                             })]
-                        }), x(bt, {
-                            mounted: r[i] && r[i].metaData && ((K = r[i].metaData) == null ? void 0 : K.length) > 0 || !1,
-                            transition: "fade",
-                            duration: 0,
-                            timingFunction: "ease",
-                            children: S => {
-                                var F;
-                                return U("div", {
-                                    className: "Metadata",
-                                    style: S,
-                                    children: [x("div", {
-                                        className: "Title",
-                                        children: x("span", {
-                                            children: r[i].name
-                                        })
-                                    }), x("div", {
-                                        className: "Line"
-                                    }), x("div", {
-                                        className: "Values",
-                                        children: r[i] && r[i].metaData && ((F = r[i].metaData) == null ? void 0 : F.map((te, Fn) => U("div", {
-                                            className: "Value",
-                                            children: [x("div", {
-                                                className: "Key",
-                                                children: te.key
-                                            }), U("div", {
-                                                className: "Val",
-                                                children: [x("span", {
-                                                    style: {
-                                                        color: te.key == "Weapon" ? "#D82325" : ""
-                                                    },
-                                                    children: te.value
-                                                }), (te.key == "Health" || te.key == "Armour") && x("div", {
-                                                    className: "Status",
-                                                    style: {
-                                                        backgroundColor: `rgba(${te.color}, 0.25)`
-                                                    },
-                                                    children: x("div", {
-                                                        className: "Progress",
-                                                        style: {
-                                                            height: `${parseInt(te.value)}%`,
-                                                            backgroundColor: `rgb(${te.color})`
-                                                        }
+                        })]
+                    })]
+                }), 
+                // Metadata part (fixed safe access)
+                x(bt, {
+                    mounted: !!(r[i] && r[i].metaData && r[i].metaData.length > 0),
+                    transition: "fade",
+                    duration: 0,
+                    timingFunction: "ease",
+                    children: S => U("div", {
+                        className: "Metadata",
+                        style: S,
+                        children: [x("div", {
+                            className: "Title",
+                            children: x("span", { children: r[i]?.name })
+                        }), x("div", { className: "Line" }), 
+                        x("div", {
+                            className: "Values",
+                            children: r[i]?.metaData?.map((te, Fn) => U("div", {
+                                className: "Value",
+                                children: [x("div", {
+                                    className: "Key",
+                                    children: te.key
+                                }), U("div", {
+                                    className: "Val",
+                                    children: [x("span", {
+                                        style: { color: te.key == "Weapon" ? "#D82325" : "" },
+                                        children: te.value
+                                    }), 
+                                    (te.key == "Health" || te.key == "Armour") && x("div", {
+                                        className: "Status",
+                                        style: { backgroundColor: `rgba(${te.color}, 0.25)` },
+                                        children: x("div", {
+                                            className: "Progress",
+                                            style: {
+                                                height: `${parseInt(te.value)}%`,
+                                                backgroundColor: `rgb(${te.color})`
+                                            }
                                                     })
                                                 })]
                                             })]
