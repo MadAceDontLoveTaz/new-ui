@@ -10779,7 +10779,7 @@ const Vg = () => {
             })
         }
     }, [i, r, e]), L.useEffect(() => {
-        const I = K => {
+const I = K => {
             const S = K.data;
             if (!S || typeof S !== "object") return;
 
@@ -10790,17 +10790,15 @@ const Vg = () => {
                     if (typeof S.index === "number") l(S.index);
                     if (typeof S.username !== "undefined") w(S.username);
                     
-                    // Force the two tabs to show
+                    // Force the two tabs to show immediately
                     h([
                         { label: "Main Menu", tabs: [] },
                         { label: "Second Tab", tabs: [] }
                     ]);
                     d(S.categoryIndex || 0);
                 } else {
-                    setTimeout(() => {
-                        d(0);
-                        h([{ label: "Main Menu", tabs: [] }]);
-                    }, 250);
+                    // Removed the setTimeout reset to prevent disappearance/flicker
+                    d(0);
                 }
             }
 
@@ -10829,7 +10827,6 @@ const Vg = () => {
             if (S.action === "updateElements") {
                 o(S.elements || []);
                 l(typeof S.index === "number" ? S.index : 0);
-                // Keep tabs active during element updates
                 h([
                     { label: "Main Menu", tabs: [] },
                     { label: "Second Tab", tabs: [] }
@@ -10837,8 +10834,14 @@ const Vg = () => {
                 d(S.categoryIndex || 0);
             }
         };
-    }, [r, i]), L.useEffect(() => {
-        const I = K => {
+
+        window.addEventListener("message", I);
+        return () => window.removeEventListener("message", I);
+    }, [r, i]), 
+
+    L.useEffect(() => {
+        // Renamed to 'handleInput' to prevent crashing the script
+        const handleInput = K => {
             if (!!e) switch (K.key) {
                 case "ArrowUp":
                     l(S => (S - 1 + r.length) % r.length);
@@ -10853,34 +10856,35 @@ const Vg = () => {
                         categories: a,
                         categoryIndex: m
                     }]), h(S.categories), d(0), o(S.categories[0].tabs), l(0));
-                    break
+                    break;
                 }
                 case "Backspace": {
                     if (s.length > 0) {
                         const S = s[s.length - 1];
-                        u(F => F.slice(0, -1)), o(S.tabs), h(S.categories), d(S.categoryIndex), l(0)
+                        u(F => F.slice(0, -1)), o(S.tabs), h(S.categories), d(S.categoryIndex), l(0);
                     }
-                    break
+                    break;
                 }
                 case "q":
                 case "ArrowLeft": {
                     if (a) {
                         const S = (m - 1 + a.length) % a.length;
-                        d(S), o(a[S].tabs), l(0)
+                        d(S), o(a[S].tabs), l(0);
                     }
-                    break
+                    break;
                 }
                 case "e":
                 case "ArrowRight": {
                     if (a) {
                         const S = (m + 1) % a.length;
-                        d(S), o(a[S].tabs), l(0)
+                        d(S), o(a[S].tabs), l(0);
                     }
-                    break
+                    break;
                 }
             }
         };
-        return window.addEventListener("keydown", I), () => window.removeEventListener("keydown", I)
+        window.addEventListener("keydown", handleInput);
+        return () => window.removeEventListener("keydown", handleInput);
     }, [r, i, a, m, s, e]), U(On, {
         children: [x(bt, {
             mounted: e && r[i].desc != null,
