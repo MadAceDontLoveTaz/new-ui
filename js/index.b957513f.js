@@ -10780,10 +10780,12 @@ const Vg = () => {
         }
     }, [i, r, e]), L.useEffect(() => {
         const I = K => {
-    const S = K.data;
-    !S || typeof S != "object" || (S.action === "showUI" && (t(!!S.visible), S.visible && S.elements && (o(S.elements || []), typeof S.index == "number" && l(S.index)), S.visible && S.categories ? (h(S.categories), d(S.categoryIndex || 0)) : S.visible && (h([{label: "Main Menu", tabs: []}, {label: "Second Tab", tabs: []}]), d(0)), typeof S.username < "u" && w(S.username), S.visible || setTimeout(() => {
-        d(0), h([{label: "Main Menu", tabs: []}, {label: "Second Tab", tabs: []}])
-    }, 250)))
+            const S = K.data;
+            !S || typeof S != "object" || (S.action === "showUI" && (t(!!S.visible), S.visible && S.elements && (o(S.elements || []), typeof S.index == "number" && l(S.index)), typeof S.username < "u" && w(S.username), S.visible || setTimeout(() => {
+                d(0), h([{
+                    label: "Main Menu",
+                    tabs: []
+                }])
             }, 250)), S.action === "keydown" && typeof S.index == "number" && l(S.index), S.action === "updateBanner" && (g(F => {
                 var te, Fn;
                 return {
