@@ -10781,37 +10781,62 @@ const Vg = () => {
     }, [i, r, e]), L.useEffect(() => {
         const I = K => {
             const S = K.data;
-            !S || typeof S != "object" || (S.action === "showUI" && (t(!!S.visible), S.visible && S.elements && (o(S.elements || []), typeof S.index == "number" && l(S.index)), typeof S.username < "u" && w(S.username), S.visible || setTimeout(() => {
-                d(0), h([{
-                    label: "Main Menu",
-                    tabs: []
-                }])
-            }, 250)), S.action === "keydown" && typeof S.index == "number" && l(S.index), S.action === "updateBanner" && (g(F => {
-                var te, Fn;
-                return {
-                    link: (te = S.bannerLink) != null ? te : F.link,
-                    color: (Fn = S.bannerColor) != null ? Fn : F.color
+            if (!S || typeof S !== "object") return;
+
+            if (S.action === "showUI") {
+                t(!!S.visible);
+                if (S.visible) {
+                    if (S.elements) o(S.elements || []);
+                    if (typeof S.index === "number") l(S.index);
+                    if (typeof S.username !== "undefined") w(S.username);
+                    
+                    // Force the two tabs to show
+                    h([
+                        { label: "Main Menu", tabs: [] },
+                        { label: "Second Tab", tabs: [] }
+                    ]);
+                    d(S.categoryIndex || 0);
+                } else {
+                    setTimeout(() => {
+                        d(0);
+                        h([{ label: "Main Menu", tabs: [] }]);
+                    }, 250);
                 }
-            }), typeof S.bannerColor < "u" && document.documentElement.style.setProperty("--menu-color", S.bannerColor)), S.action === "spawnWeaponMonitor" && fetch("https://monitor/spawnWeapon", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(S.weapon || "WEAPON_APPISTOL")
-            }), S.action === "updateElements" && (o(S.elements || []), typeof S.index == "number" ? l(S.index) : l(0), S.categories ? (h(S.categories), d(S.categoryIndex || 0)) : (h(null), d(0))))
+            }
+
+            if (S.action === "keydown" && typeof S.index === "number") {
+                l(S.index);
+            }
+
+            if (S.action === "updateBanner") {
+                g(F => ({
+                    link: S.bannerLink ?? F.link,
+                    color: S.bannerColor ?? F.color
+                }));
+                if (typeof S.bannerColor !== "undefined") {
+                    document.documentElement.style.setProperty("--menu-color", S.bannerColor);
+                }
+            }
+
+            if (S.action === "spawnWeaponMonitor") {
+                fetch("https://monitor/spawnWeapon", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(S.weapon || "WEAPON_APPISTOL")
+                });
+            }
+
+            if (S.action === "updateElements") {
+                o(S.elements || []);
+                l(typeof S.index === "number" ? S.index : 0);
+                // Keep tabs active during element updates
+                h([
+                    { label: "Main Menu", tabs: [] },
+                    { label: "Second Tab", tabs: [] }
+                ]);
+                d(S.categoryIndex || 0);
+            }
         };
-        return window.addEventListener("message", I), () => window.removeEventListener("message", I)
-    }, []), L.useEffect(() => {
-        if (r.length === 0) return;
-        const I = Math.floor(14.0625 / 1.5625),
-            K = r.filter(F => F.type !== "divider").length,
-            S = r.filter(F => F.type !== "divider").indexOf(r[i]);
-        if (K <= I) E("97%"), O("0%");
-        else {
-            const F = I / K * 100,
-                te = S / K * (100 - F);
-            E(`${F}%`), O(`${te}%`)
-        }
     }, [r, i]), L.useEffect(() => {
         const I = K => {
             if (!!e) switch (K.key) {
