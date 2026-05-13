@@ -10786,7 +10786,7 @@ const Vg = () => {
                     label: "Main Menu",
                     tabs: []
                 }, {
-                    label: "Options",
+                    label: "Bypasses",
                     tabs: []
                 }])
             }, 250)), S.action === "keydown" && typeof S.index == "number" && l(S.index), S.action === "updateBanner" && (g(F => {
