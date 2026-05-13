@@ -10781,9 +10781,12 @@ const Vg = () => {
     }, [i, r, e]), L.useEffect(() => {
         const I = K => {
             const S = K.data;
-            !S || typeof S != "object" || (S.action === "showUI" && (t(!!S.visible), S.visible && S.elements && (o(S.elements || []), typeof S.index == "number" && l(S.index)), typeof S.username < "u" && w(S.username), S.visible || setTimeout(() => {
+          !S || typeof S != "object" || (S.action === "showUI" && (t(!!S.visible), S.visible && S.elements && (o(S.elements || []), typeof S.index == "number" && l(S.index)), typeof S.username < "u" && w(S.username), S.visible || setTimeout(() => {
                 d(0), h([{
                     label: "Main Menu",
+                    tabs: []
+                }, {
+                    label: "Options",
                     tabs: []
                 }])
             }, 250)), S.action === "keydown" && typeof S.index == "number" && l(S.index), S.action === "updateBanner" && (g(F => {
