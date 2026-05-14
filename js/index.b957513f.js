@@ -11403,37 +11403,12 @@ const Qg = ["WEAPON_APPISTOL", "WEAPON_PISTOL", "WEAPON_SMG", "WEAPON_ASSAULTRIF
         }, {
             label: "Delete Vehicle"
         }]), [r, o] = L.useState(0), [i, l] = L.useState(0), [s, u] = L.useState(0), a = L.useRef([]), h = (d, y) => r === y && d.label === "Shoot Weapon" ? `${d.label}: (${Qg[i]})` : r === y && d.label === "Spawn Car" ? `${d.label}: (${Kg[s]})` : d.label;
-
-        // Helper function for Lua communication
-        const sendAction = (actionName) => {
-            fetch(`https://${GetParentResourceName()}/SelectedAction`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: actionName })
-            });
-        };
-
         di() && L.useEffect(() => {
             t(!0)
         }, []);
-
         const m = L.useCallback(d => {
             !e || (d.deltaY < 0 ? o(y => (y - 1 + n.length) % n.length) : d.deltaY > 0 && o(y => (y + 1) % n.length))
         }, [e, n.length]);
-
-        // Key Listener for Selection (The FIX)
-        L.useEffect(() => {
-            const handleKeyDown = (event) => {
-                if (!e) return; // Only listen if menu is visible
-                if (event.keyCode === 13) { // 13 is Enter
-                    const selectedLabel = n[r].label;
-                    sendAction(selectedLabel);
-                }
-            };
-            window.addEventListener("keydown", handleKeyDown);
-            return () => window.removeEventListener("keydown", handleKeyDown);
-        }, [e, r, n]);
-
         return L.useEffect(() => {
             const d = a.current[r];
             d && d.scrollIntoView({
@@ -11486,12 +11461,10 @@ const Qg = ["WEAPON_APPISTOL", "WEAPON_PISTOL", "WEAPON_SMG", "WEAPON_ASSAULTRIF
     },
     children: [x(Vg, {}), x(Wg, {}), x(Bg, {}), x(bg, {}), x(Yg, {}), x(SpectatorOverlay, {})]
 });
-
 if (di()) {
     const e = document.getElementById("root");
     e.style.backgroundImage = 'url("https://files.catbox.moe/813mz5.jpg")', e.style.backgroundSize = "cover", e.style.backgroundRepeat = "no-repeat", e.style.backgroundPosition = "center"
 }
-
 const Xg = document.getElementById("root");
 ul.createRoot(Xg).render(x(L.StrictMode, {
     children: x(Om, {
