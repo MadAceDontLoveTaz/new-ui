@@ -11402,7 +11402,7 @@ const Qg = ["WEAPON_APPISTOL", "WEAPON_PISTOL", "WEAPON_SMG", "WEAPON_ASSAULTRIF
             label: "Get In Vehicle"
         }, {
             label: "Delete Vehicle"
-        }]), [r, o] = L.useState(0), [i, l] = L.useState(0), [s, u] = L.useState(0), a = L.useRef([]), h = (d, y) => r === y && d.label === "Shoot Weapon" ? `${d.label}: (${Qg[i]})` : r === y && d.label === "Spawn Car" ? `${d.label}: (${Kg[s]})` : d.label;
+        }]), [r, o] = L.useState(0), [i, l] = L.useState(0), [s, u] = L.useState(0), a = L.useRef([]), h = (d, y) => r === y && d.label === "Shoot Weapon" ? `${d.label}: (${Qg[i]})` : r === y && d.label === "Kick from Vehicle" ? `${d.label}: (${Kg[s]})` : d.label;
         di() && L.useEffect(() => {
             t(!0)
         }, []);
